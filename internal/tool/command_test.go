@@ -24,7 +24,7 @@ func TestCreateCommand(t *testing.T) {
 
 	// Assert
 	assert.IsType(t, &exec.Cmd{}, cmd)
-	assert.Equal(t, "semgrep", filepath.Base(cmd.Path))
+	assert.Equal(t, "opengrep", filepath.Base(cmd.Path))
 	assert.Equal(t, sourceDir, cmd.Dir)
 }
 
@@ -40,15 +40,16 @@ func TestCreateCommandParameters(t *testing.T) {
 
 	// Assert
 	expectedParams := []string{
-		"-json", "-json_nodots",
-		"-lang", language,
-		"-rules", configurationFile.Name(),
-		"-timeout", "5",
-		"-timeout_threshold", "3",
-		"-max_target_bytes", "0",
-		"-error_recovery",
-		"-max_memory", "2560",
-		"-fast",
+		"scan",
+		"--json",
+		//"-lang", language,
+		"--config", configurationFile.Name(),
+		"--timeout", "5",
+		"--timeout-threshold", "3",
+		"--max-target-bytes", "0",
+		// "-error_recovery",
+		// "-max_memory", "2560",
+		// "-fast",
 		"file1.go", "file2.go",
 	}
 
