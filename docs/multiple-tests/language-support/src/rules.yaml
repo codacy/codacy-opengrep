@@ -1,0 +1,74 @@
+rules:
+- id: apex.lang.yay.ncino.injection.apexsoqlinjectionunescapedparam.soql-injection-unescaped-param
+  min-version: 1.44.0
+  mode: taint
+  severity: ERROR
+  languages:
+    - apex
+  metadata:
+    category: security
+    subcategory:
+    - vuln
+    technology:
+    - salesforce
+    cwe:
+    - 'CWE-943: Improper Neutralization of Special Elements in Data Query Logic'
+    owasp:
+    - A03:2021 - Injection
+    references:
+    - https://cwe.mitre.org/data/definitions/943.html
+    impact: HIGH
+    likelihood: HIGH
+    confidence: HIGH
+  message: >-
+    If a dynamic query must be used,leverage nFORCE Query Builder.
+    In other programming languages, the related flaw is known as SQL injection.
+    Apex doesn't use SQL, but uses its own database query language, SOQL. SOQL is
+    much simpler and more limited in functionality than SQL. The risks are much
+    lower for SOQL injection than for SQL injection, but the attacks are nearly
+    identical to traditional SQL injection. SQL/SOQL injection takes user-supplied
+    input and uses those values in a dynamic SOQL query. If the input isn't validated,
+    it can include SOQL commands that effectively modify the SOQL statement and trick
+    the application into performing unintended commands.
+  pattern-sources:
+    - by-side-effect: true
+      patterns:
+        - pattern: $M(...,String $P,...) { ... }
+        - focus-metavariable: $P
+  pattern-sanitizers:
+    - pattern-either:
+      - pattern: String.escapeSingleQuotes($P)
+      - pattern: Database.query(<... String.escapeSingleQuotes($P) ...>)
+  pattern-sinks:
+    - pattern: Database.query(<... $P ...>)
+- id: apex.lang.security.ncino.sharing.specifysharinglevel.specify-sharing-level
+  min-version: 1.44.0
+  severity: WARNING
+  languages:
+    - apex
+  metadata:
+    cwe:
+    - 'CWE-284: Improper Access Control'
+    owasp:
+    - A04:2021 - Insecure Design
+    references:
+    - https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_keywords_sharing.htm
+    - https://cwe.mitre.org/data/definitions/284.html
+    - https://owasp.org/Top10/A04_2021-Insecure_Design/
+    category: security
+    subcategory:
+    - vuln
+    technology:
+    - salesforce
+    impact: MEDIUM
+    likelihood: MEDIUM
+    confidence: HIGH
+  message: >-
+      Every Apex class should have an explicit sharing mode declared. Use the `with sharing`
+      or `without sharing` keywords on a class to specify whether sharing rules must be enforced.
+      Use the `inherited sharing` keyword on an Apex class to run the class in the sharing mode
+      of the class that called it.
+  patterns:
+    - pattern-regex: (private|public|global).*\s(class)\s.*[{]
+    - pattern-not-regex: (private|public|global).*[with|without|inherited]\s[sharing].*\s(class)\s.*[{]
+    - pattern-not-regex: (private|public|global).*\s(class)\s.*(extends)\s(Exception).*[{]

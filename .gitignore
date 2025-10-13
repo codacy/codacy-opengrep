@@ -1,0 +1,36 @@
+.ammonite
+.mypy_cache
+*~
+.*.swp
+.idea
+.scala-build
+.bsp
+.metals
+codacy-semgrep.iml
+codacy-opengrep.iml
+.vscode
+project
+target
+bin
+cache
+*.gen.go
+
+# Ignore generated documentation files to avoid licensing issues
+docs/patterns.json
+docs/description/*.md
+docs/description/*.json
+docs/rules.yaml
+docs/semgrep-pro-rules.yaml
+.DS_Store
+.codacyrc
+auto.yaml
+.codacy
+.cursor
+
+
+#Ignore vscode AI rules
+.github/copilot-instructions.md
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md

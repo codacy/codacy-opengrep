@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="root">
+    <module name="codacy.csharp.security.hard-coded-password" />
+    <module name="codacy.generic.plsql.empty-strings"/>
+    <module name="codacy.generic.plsql.find-all-passwords"/>
+    <module name="codacy.generic.plsql.resource-injection"/>
+    <module name="codacy.csharp.security.null-dereference"/>
+    <module name="codacy.generic.security.detect-invisible-unicode"/>
+    <module name="codacy.generic.csharp-lowercase-variables"/>
+</module>

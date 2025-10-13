@@ -1,0 +1,356 @@
+rules:
+  - id: codacy.java.security.hard-coded-password
+    severity: ERROR
+    languages:
+      - java
+    patterns:
+        - pattern-either:
+          - pattern: String $PASSWORD = "$VALUE";
+        - metavariable-regex:
+            metavariable: "$PASSWORD"
+            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd).*"
+    message: Hardcoded passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Hardcoded passwords are a security risk.
+      category: security
+      technology:
+        - java
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.csharp.security.hard-coded-password
+    severity: ERROR
+    languages:
+      - csharp
+    patterns:
+        - pattern-either:
+          - pattern: var $PASSWORD = "$VALUE";
+        - metavariable-regex:
+            metavariable: "$PASSWORD"
+            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd).*"
+    message: Hardcoded passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Hardcoded passwords are a security risk.
+      category: security
+      technology:
+        - .net
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.javascript.security.hard-coded-password
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+        - pattern-either:
+          - pattern: let $PASSWORD = "$VALUE"
+          - pattern: const $PASSWORD = "$VALUE"
+          - pattern: var $PASSWORD = "$VALUE"
+          - pattern: let $PASSWORD = '$VALUE'
+          - pattern: const $PASSWORD = '$VALUE'
+          - pattern: var $PASSWORD = '$VALUE'
+          - pattern: let $PASSWORD = `$VALUE`
+          - pattern: const $PASSWORD = `$VALUE`
+          - pattern: var $PASSWORD = `$VALUE`
+        - metavariable-regex:
+            metavariable: "$PASSWORD"
+            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd).*"
+    message: Hardcoded passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Hardcoded passwords are a security risk.
+      category: security
+      technology:
+        - javascript
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.generic.plsql.empty-strings
+    severity: WARNING
+    languages:
+      - generic
+    pattern: $VAR VARCHAR2($LENGTH) := '';
+    message: Empty strings can lead to unexpected behavior and should be handled carefully.
+    metadata:
+      description: Detects empty strings in the code which might cause issues or bugs.
+      category: security
+      impact: MEDIUM
+      confidence: MEDIUM
+  - id: codacy.generic.plsql.find-all-passwords
+    severity: ERROR
+    languages:
+      - generic
+    patterns:
+      - pattern: |
+          $PASSWORD VARCHAR2($LENGTH) := $...VALUE;
+      - metavariable-regex:
+          metavariable: "$PASSWORD"
+          regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd).*"
+    options:
+      generic_ellipsis_max_span: 0
+    message: >
+      Hardcoded or exposed passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Finding all occurrences of passwords in different languages and formats, while avoiding common false positives.
+      category: security
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.generic.plsql.resource-injection
+    severity: ERROR
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $RESOURCE := DBMS_CUBE.BUILD($...ARGS);
+          - pattern: |
+              $RESOURCE := DBMS_FILE_TRANSFER.COPY_FILE($...ARGS);
+          - pattern: |
+              $RESOURCE := DBMS_FILE_TRANSFER.GET_FILE($...ARGS);
+          - pattern: |
+              $RESOURCE := DBMS_FILE_TRANSFER.PUT_FILE($...ARGS);
+          - pattern: |
+              $RESOURCE := DBMS_SCHEDULER.GET_FILE($...ARGS);
+          - pattern: |
+              $RESOURCE := DBMS_SCHEDULER.PUT_FILE($...ARGS);
+          - pattern: |
+              $RESOURCE := DBMS_SCHEDULER.CREATE_PROGRAM($...ARGS);
+          - pattern: |
+              $RESOURCE := DBMS_SERVICE.CREATE_SERVICE($...ARGS);
+          - pattern: |
+              $RESOURCE := UTL_TCP.OPEN_CONNECTION($...ARGS);
+          - pattern: |
+              $RESOURCE := UTL_SMTP.OPEN_CONNECTION($...ARGS);
+          - pattern: |
+              $RESOURCE := WPG_DOCLOAD.DOWNLOAD_FILE($...ARGS);
+    options:
+      generic_ellipsis_max_span: 0
+    message: Resource injection detected. This can lead to unauthorized access or manipulation of resources.
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Detects assignments in PL/SQL involving risky DBMS functions that might cause security issues.
+      category: security
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.generic.sql.grant-all
+    severity: ERROR
+    languages:
+      - generic
+    pattern: |
+          GRANT ALL $X
+    paths:
+      include:
+        - '*.sql'
+    message: >
+      GRANT ALL privileges should not be used as it gives excessive permissions that violate the principle of least privilege.
+      Instead, grant only the specific privileges that are required.
+    metadata:
+      owasp:
+        - A5:2017 Broken Access Control
+      description: Detects use of GRANT ALL which gives excessive database privileges
+      category: security
+      impact: HIGH
+      confidence: LOW
+  - id: codacy.generic.sql.grant-select-no-role
+    languages:
+      - generic
+    severity: ERROR
+    message: >
+      GRANT SELECT privileges should only be given to role-based accounts
+      (ending in '_role'). Direct grants to users or non-role accounts violate
+      security best practices.
+    pattern-regex: GRANT\s+(DELETE|INSERT|SELECT|UPDATE)(\s*,\s*(DELETE|INSERT|SELECT|UPDATE))*\s+ON\s+[a-zA-Z0-9_]+(\.[a-zA-Z0-9_*]+)?\s+TO\s+(?![a-zA-Z0-9_]*_role\b)[a-zA-Z0-9_]+
+    paths:
+      include:
+        - "*.sql"
+    metadata:
+      owasp:
+        - A5:2017 Broken Access Control
+      description: Detects GRANT SELECT statements that are not targeting role-based
+        accounts
+      category: security
+      impact: MEDIUM
+      confidence: LOW
+  - id: codacy.generic.sql.fnd-profile-in-query
+    severity: ERROR
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+        - pattern-regex: (?i)SELECT\s+.*\bFND_PROFILE\.[a-zA-Z0-9_]+\(
+        - pattern-regex: (?i)SELECT\s+.*\bFROM\b.*\bWHERE\b.*\bFND_PROFILE\.[a-zA-Z0-9_]+\(
+
+    paths:
+      include:
+        - '*.sql'
+    message: >
+      FND_PROFILE functions should not be used directly in SELECT or WHERE clauses.
+      Instead, assign the FND_PROFILE function value to a variable first and then use that variable in the query.
+      This improves performance and maintainability.
+    metadata:
+      description: Detects direct usage of FND_PROFILE functions in SQL queries instead of using variables
+      category: performance
+      impact: MEDIUM
+      confidence: LOW
+  - id: codacy.java.security.flexible-search-sql-injection
+    languages: 
+      - java
+    severity: ERROR
+    message: "Possible SQL Injection: Avoid concatenating user input in FlexibleSearchQuery."
+    patterns:
+      - pattern-either:
+        - pattern: |
+            new FlexibleSearchQuery("SELECT " + ...)
+        - pattern: |
+            new FlexibleSearchQuery("..." + $VAR + "...")
+      - pattern-not: |
+          new FlexibleSearchQuery("SELECT ... ?param")
+    metadata:
+      category: security
+      technology: [sap-commerce, hybris]
+      confidence: LOW
+  - id: codacy.csharp.security.null-dereference
+    languages:
+      - csharp
+    severity: ERROR
+    message: >
+      Potential null dereference detected. The parameter or variable could be
+      null and should be validated before accessing its members. Add a null
+      check before dereferencing the object to prevent NullReferenceException at
+      runtime.
+    patterns:
+      - pattern-inside: |
+          $RETURNTYPE $METHOD(...,$TYPE $NULLABLE, ...) { ... }
+      - pattern-not-inside: |
+          if ($NULLABLE == null) { ... }
+          ...
+      - pattern-either:
+          - pattern: |
+              $NULLABLE.$MEMBER
+          - pattern: |
+              $FUNCTION_NAME($NULLABLE, ...);
+      - pattern-not: |
+          if ($NULLABLE == null) { return ... }
+          ...
+    metadata:
+      category: security
+      technology:
+        - csharp
+        - dotnet
+      confidence: LOW
+  - id: codacy.generic.security.detect-invisible-unicode
+    languages:
+      - yaml
+      - json 
+    severity: WARNING
+    message: It's possible to embed malicious secret instructions to AI rules files using unicode characters that are invisible to human reviewers.This can lead to future AI-generated code that has security vulnerabilities or other weaknesses baked in which may not be noticed.
+    pattern-regex: "[\u200B\u200C\u200D\u2060\uFEFF]"
+    paths:
+      include:
+        - "*.json"
+        - "*.yaml"
+        - "*.yml"
+    metadata:
+      description: Detects the invisible unicode characters
+      category: security
+      technology:
+        - AI
+        - Copilot
+        - Cursor
+      confidence: MEDIUM
+  - id: codacy.generic.csharp-lowercase-variables
+    languages:
+      - csharp
+    severity: INFO
+    message: "Variable names should be lowercase"
+    pattern-regex: (?:int|string|long|float|char|double|bool|var)\s([A-Z0-9])
+    paths:
+      include:
+        - "*.cs"
+    metadata:
+      description: Variable names should be lowercase
+      category: codestyle
+      technology:
+        - .net
+      impact: LOW
+      confidence: LOW
+  - id: codacy.generic.sql.hardcoded-language-currency-orgid
+    severity: ERROR
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+        - pattern-regex: "(?i)\\b\\w*language\\w*\\b\\s*(=|:=)\\s*'?\\b[A-Z]{2}\\b'?"
+        - pattern-regex: "(?i)\\b\\w*currency\\w*\\b\\s*(=|:=)\\s*'?\\b[A-Z]{3}\\b'?"
+        - pattern-regex: "(?i)\\b(\\w*\\.)?org_id\\b\\s*(=|:=|IN|!=|<>)\\s*(\\(?\\s*'?\\d+'?(,\\s*'?\\d+'?)*\\s*\\)?)?"
+    paths:
+      include:
+        - "*.sql"
+    message: >
+      Hardcoded Language, Currency, or Org_Id values detected in SQL.Avoid hardcoding such values; use parameters or configuration instead.
+    metadata:
+      description: >
+        Detects hardcoded values for fields containing 'language', 'currency', or 'org_id' in SQL queries. These should be parameterized or retrieved from configuration.
+      category: performance
+      impact: MEDIUM
+      confidence: LOW
+  - id: codacy.generic.sql.lookup-type-without-language-or-apps-fnd
+    severity: ERROR
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          - pattern-regex: "(?i)lookup_type(?![^;]{0,200}language\\s*=)"  
+          - pattern-regex: "apps\\.fnd_lookup_values"                     
+    paths:
+      include:
+        - "*.sql"
+    message: >
+      Usage of 'lookup_type' without a language clause or reference to 'apps.fnd_lookup_values' detected.These patterns must be reviewed for localization and security risks.
+    metadata:
+      description: >
+        Flags usage of 'lookup_type' when no 'language = ...' clause is present, and flags any use of 'apps.fnd_lookup_values'.
+      category: performance
+      impact: MEDIUM
+      confidence: LOW
+  - id: codacy.generic.sql.from-all-without-orgid
+    severity: ERROR
+    languages:
+      - generic
+    patterns:
+      - pattern-regex: "(?i)from\\s+[a-z0-9_]*_all[a-z0-9_]*(?![^;]{0,300}\\b[a-z0-9_]*org_id\\b\\s*(=|:=))"
+    paths:
+      include:
+        - "*.sql"
+    message: >
+      Detected use of *_ALL* table without an org_id clause.These queries must include an org_id condition to ensure data partitioning.
+    metadata:
+      description: >
+        Flags any SQL query selecting from *_ALL* tables without checking for an org_id condition like org_id = ... or org_id := ...
+      category: performance
+      impact: MEDIUM
+      confidence: LOW
+  - id: codacy.generic.sql.rac-table-access
+    severity: ERROR
+    languages:
+      - generic
+    patterns:
+      - pattern-regex: '(?i)\b(SELECT|INSERT\s+INTO|UPDATE|DELETE\s+FROM)\b(?![^\n;]*\bRAC_\w*\b)[^\n;]*'
+    paths:
+      include:
+        - "*.sql"
+    message: >
+      All queries must target RAC_* tables.Query does not reference RAC_* table.
+    metadata:
+      description: >
+        Enforce that all SELECT, INSERT, UPDATE, and DELETE queries must be performed only on RAC_* tables.
+      category: performance
+      impact: MEDIUM
+      confidence: LOW
+

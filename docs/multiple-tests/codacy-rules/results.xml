@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<checkstyle version="1.5">
+    <file name="codacy-csharp-security-hard-coded-password.cs">
+        <error source="codacy.csharp.security.hard-coded-password" line="9" message="Hardcoded passwords are a security risk." severity="error" />
+        <error source="codacy.csharp.security.null-dereference" line="23" message="Potential null dereference detected." severity="error" />
+        <error source="codacy.csharp.security.null-dereference" line="26" message="Potential null dereference detected." severity="error" />
+        <error source="codacy.csharp.security.null-dereference" line="26" message="Potential null dereference detected." severity="error" />
+    </file>
+    <file name="test_find_all_passwords_and_empty_string.pls">
+        <error source="codacy.generic.plsql.empty-strings" line="29" message="Empty strings can lead to unexpected behavior and should be handled carefully." severity="warning" />
+        <error source="codacy.generic.plsql.find-all-passwords" line="6" message="Hardcoded or exposed passwords are a security risk." severity="error" />
+        <error source="codacy.generic.plsql.find-all-passwords" line="7" message="Hardcoded or exposed passwords are a security risk." severity="error" />
+        <error source="codacy.generic.plsql.find-all-passwords" line="8" message="Hardcoded or exposed passwords are a security risk." severity="error" />
+    </file>
+    <file name="test_resource_injection.pls">
+        <error source="codacy.generic.plsql.resource-injection" line="16" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="17" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="18" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="19" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="20" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="21" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="22" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="23" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="24" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="25" message="Resource injection detected." severity="error" />
+        <error source="codacy.generic.plsql.resource-injection" line="26" message="Resource injection detected." severity="error" />
+    </file>
+    <file name="codacy.generic.security.detect-invisible-unicode.yaml">
+        <error source="codacy.generic.security.detect-invisible-unicode" line="2" message="It's possible to embed malicious secret instructions to AI rules files using unicode characters that are invisible to human reviewers.This can lead to future AI-generated code that has security vulnerabilities or other weaknesses baked in which may not be noticed." severity="warning" />
+    </file>
+    <file name="codacy.csharp-lowercase.cs">
+        <error source="codacy.generic.csharp-lowercase-variables" line="5" message="Variable names should be lowercase" severity="info" />
+    </file>
+</checkstyle>
