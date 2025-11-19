@@ -8,6 +8,7 @@
     <module name="clojure.lang.security.use-of-md5.use-of-md5" />
     <module
         name="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration" />
+    <module name="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine" />
     <module name="dockerfile.security.last-user-is-root.last-user-is-root" />
     <module name="dockerfile.security.missing-user.missing-user" />
     <module name="elixir.lang.best-practice.enum-map-join.enum_map_join" />
@@ -17,6 +18,7 @@
     <module name="java.java-jwt.security.jwt-none-alg.java-jwt-none-alg" />
     <module name="javascript.ajv.security.audit.ajv-allerrors-true.ajv-allerrors-true" />
     <module name="javascript.lang.security.detect-child-process.detect-child-process" />
+    <module name="javascript.lang.security.audit.dangerous-spawn-shell.dangerous-spawn-shell" />
     <module
         name="javascript.react.correctness.hooks.set-state-no-op.calling-set-state-on-current-state" />
     <module name="javascript.vue.security.audit.xss.templates.avoid-v-html.avoid-v-html" />

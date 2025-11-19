@@ -51,6 +51,11 @@ func createUnifiedRuleFile(filename string, parsedSemgrepRules *ParsedSemgrepRul
 				continue
 			}
 
+			// Skip lines starting with "min-version:" (ignoring leading whitespace)
+			if strings.HasPrefix(strings.TrimSpace(line), "min-version:") {
+				continue
+			}
+
 			// Apply C rules to C++
 			if strings.TrimSpace(line) == "languages: [c]" {
 				line = strings.Replace(line, "[c]", "[c,cpp]", 1)

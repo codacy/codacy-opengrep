@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <checkstyle version="1.5">
-    <!-- TODO: re-enable when the mode: taint rules are supported -->
+    <!-- Not considering apex for now. Opengrep elipsis operator seems broken -->
     <!-- <file name="apex/ApexSOQLInjectionUnescapedParam.cls">
         <error
             source="apex.lang.security.ncino.injection.apexsoqlinjectionunescapedparam.soql-injection-unescaped-param"
@@ -49,24 +49,37 @@
     <file name="csharp/use_weak_rng_for_keygeneration.cs">
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="12"
+            line="13"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
             severity="error" />
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="20"
+            line="21"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
             severity="error" />
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="45"
+            line="46"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
             severity="error" />
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="61"
+            line="62"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
             severity="error" />
+        <error source="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine"
+            line="85"
+            message="String argument fileName is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName."
+            severity="warning" />
+        <error source="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine"
+            line="78"
+            message="String argument userInput is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName."
+            severity="warning" />
+        <error source="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine"
+            line="92"
+            message="String argument userPath is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName."
+            severity="warning" />
+
     </file>
     <file name="dockerfile/Dockerfile">
         <error source="dockerfile.security.last-user-is-root.last-user-is-root" line="9"
@@ -206,8 +219,8 @@
         <error source="javascript.lang.security.detect-child-process.detect-child-process" line="6"
             message="Detected calls to child_process from a function argument `args`. This could lead to a command injection if the input is user controllable."
             severity="error" />
-        <error source="javascript.lang.security.detect-child-process.detect-child-process" line="13"
-            message="Detected calls to child_process from a function argument `userInput`. This could lead to a command injection if the input is user controllable."
+        <error source="javascript.lang.security.audit.dangerous-spawn-shell.dangerous-spawn-shell" line="15"
+            message="Detected non-literal calls to cp.spawnSync(). This could lead to a command injection vulnerability."
             severity="error" />
     </file>
     <file name="unknown_extension/double-free.h">
@@ -215,39 +228,60 @@
             message="Variable 'var' was freed twice." severity="error" />
     </file>
     <file name="vue/avoid-v-html.vue">
-        <error source="javascript.vue.security.audit.xss.templates.avoid-v-html.avoid-v-html" line="3"
+        <error source="javascript.vue.security.audit.xss.templates.avoid-v-html.avoid-v-html"
+            line="3"
             message="Dynamically rendering arbitrary HTML on your website can be very dangerous because it can easily lead to XSS vulnerabilities."
             severity="warning" />
     </file>
     <file name="xml/VisualForceAPIVersion.page-meta.xml">
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="4"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="4"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="11"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="11"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="18"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="18"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="25"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="25"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="32"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="32"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="39"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="39"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="46"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="46"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="53"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="53"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="60"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="60"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
-        <error source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version" line="67"
+        <error
+            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
+            line="67"
             message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
             severity="warning" />
     </file>
