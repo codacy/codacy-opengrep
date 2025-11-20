@@ -91,8 +91,8 @@ func semgrepRules(destinationDir string) ([]PatternWithExplanation, *ParsedSemgr
 
 func getSemgrepRegistryRules() (*ParsedSemgrepRules, error) {
 	return getRules(
-		"https://github.com/opengrep/opengrep-rules",
-		"f1d2b562b414783763fd02a6ed2736eaed622efa",
+		"https://github.com/semgrep/semgrep-rules",
+		"4ccd3b9cce2321a5fe3793868e4c2d4cfa5e9c43",
 		isValidSemgrepRegistryRuleFile,
 		prefixRuleIDWithPath)
 }
