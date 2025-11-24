@@ -60,12 +60,4 @@ public class ApexSOQLInjectionUnescapedParam {
 
 		return results;
 	}
-
-	// ruleid: global-access-modifiers
-	global static String globalMethod() {
-		return 'This should not be global';
-	}
-
-	// ruleid: global-access-modifiers
-	global String globalVariable = 'This should not be global';
 }

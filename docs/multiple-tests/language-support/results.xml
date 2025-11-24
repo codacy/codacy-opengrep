@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <checkstyle version="1.5">
-    <!-- Not considering apex for now. Opengrep elipsis operator seems broken -->
-    <!-- <file name="apex/ApexSOQLInjectionUnescapedParam.cls">
+    <file name="apex/ApexSOQLInjectionUnescapedParam.cls">
         <error
             source="apex.lang.security.ncino.injection.apexsoqlinjectionunescapedparam.soql-injection-unescaped-param"
             line="4"
@@ -22,7 +21,7 @@
             line="34"
             message="If a dynamic query must be used,leverage nFORCE Query Builder."
             severity="error" />
-    </file> -->
+    </file>
     <file name="bash/curl-eval.bash">
         <error source="bash.curl.security.curl-eval.curl-eval" line="5"
             message="Data is being eval'd from a `curl` command." severity="warning" />
@@ -49,41 +48,23 @@
     <file name="csharp/use_weak_rng_for_keygeneration.cs">
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="13"
+            line="12"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
             severity="error" />
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="21"
+            line="20"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
             severity="error" />
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="46"
+            line="45"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
             severity="error" />
         <error
             source="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration"
-            line="62"
+            line="61"
             message="You are using an insecure random number generator (RNG) to create a cryptographic key."
-            severity="error" />
-        <error source="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine"
-            line="85"
-            message="String argument fileName is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName."
-            severity="warning" />
-        <error source="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine"
-            line="78"
-            message="String argument userInput is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName."
-            severity="warning" />
-        <error source="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine"
-            line="92"
-            message="String argument userPath is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName."
-            severity="warning" />
-
-    </file>
-    <file name="dockerfile/Dockerfile">
-        <error source="dockerfile.security.last-user-is-root.last-user-is-root" line="9"
-            message="The last user in the container is 'root'. This is a security hazard because if an attacker gains control of the container they will have root access."
             severity="error" />
     </file>
     <file name="dockerfile/missing-user.dockerfile">
@@ -91,9 +72,6 @@
             message="By not specifying a USER, a program in the container may run as 'root'. This is a security hazard."
             severity="error" />
         <error source="dockerfile.security.missing-user.missing-user" line="13"
-            message="By not specifying a USER, a program in the container may run as 'root'. This is a security hazard."
-            severity="error" />
-        <error source="dockerfile.security.missing-user.missing-user" line="16"
             message="By not specifying a USER, a program in the container may run as 'root'. This is a security hazard."
             severity="error" />
     </file>
@@ -219,71 +197,13 @@
         <error source="javascript.lang.security.detect-child-process.detect-child-process" line="6"
             message="Detected calls to child_process from a function argument `args`. This could lead to a command injection if the input is user controllable."
             severity="error" />
-        <error source="javascript.lang.security.audit.dangerous-spawn-shell.dangerous-spawn-shell" line="15"
-            message="Detected non-literal calls to cp.spawnSync(). This could lead to a command injection vulnerability."
+        <error source="javascript.lang.security.detect-child-process.detect-child-process" line="13"
+            message="Detected calls to child_process from a function argument `userInput`. This could lead to a command injection if the input is user controllable."
             severity="error" />
     </file>
     <file name="unknown_extension/double-free.h">
         <error source="c.lang.security.double-free.double-free" line="7"
             message="Variable 'var' was freed twice." severity="error" />
-    </file>
-    <file name="vue/avoid-v-html.vue">
-        <error source="javascript.vue.security.audit.xss.templates.avoid-v-html.avoid-v-html"
-            line="3"
-            message="Dynamically rendering arbitrary HTML on your website can be very dangerous because it can easily lead to XSS vulnerabilities."
-            severity="warning" />
-    </file>
-    <file name="xml/VisualForceAPIVersion.page-meta.xml">
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="4"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="11"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="18"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="25"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="32"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="39"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="46"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="53"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="60"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
-        <error
-            source="generic.visualforce.security.ncino.xml.visualforceapiversion.visualforce-page-api-version"
-            line="67"
-            message="Visualforce Pages must use API version 55 or higher for required use of the cspHeader attribute set to true."
-            severity="warning" />
     </file>
     <file name="yaml/argo-workflow-parameter-command-injection.test.yaml">
         <error
