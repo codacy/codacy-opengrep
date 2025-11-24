@@ -10,7 +10,9 @@ function a(args) {
 
 function a(userInput) {
   // ruleid:detect-child-process
-  cp.spawnSync(userInput);
+  let name = "bash";
+    // ruleid: dangerous-spawn-shell
+  cp.spawnSync(name, ["-c", userInput]);
 }
 
 // ok:detect-child-process
