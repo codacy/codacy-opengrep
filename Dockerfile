@@ -20,21 +20,20 @@ COPY --from=builder /src/bin/codacy-opengrep /src/bin/codacy-opengrep
 RUN upx --lzma /src/bin/codacy-opengrep
 
 # Final published image for the codacy-opengrep wrapper
-FROM alpine:3.21
-RUN adduser -u 2004 -D docker
-RUN apk add --no-cache curl
+FROM python:3.12-slim
+RUN apt update && apt install -y tar bash cosign curl adduser
+RUN adduser --uid 2004 --disabled-password --gecos "" docker
 
 # Download and extract opengrep binary from GitHub releases
 ARG OPENGREP_VERSION
 ARG TARGETARCH
 ENV OPENGREP_VERSION=${OPENGREP_VERSION}
-RUN apk add --no-cache tar bash cosign
 
 # Download appropriate binary based on architecture
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
-        curl -L -o /usr/local/bin/opengrep "https://github.com/opengrep/opengrep/releases/download/${OPENGREP_VERSION}/opengrep_musllinux_aarch64"; \
+        curl -L -o /usr/local/bin/opengrep "https://github.com/opengrep/opengrep/releases/download/${OPENGREP_VERSION}/opengrep_manylinux_aarch64"; \
     else \
-        curl -L -o /usr/local/bin/opengrep "https://github.com/opengrep/opengrep/releases/download/${OPENGREP_VERSION}/opengrep_musllinux_x86"; \
+        curl -L -o /usr/local/bin/opengrep "https://github.com/opengrep/opengrep/releases/download/${OPENGREP_VERSION}/opengrep_manylinux_x86"; \
     fi \
     && chmod +x /usr/local/bin/opengrep
 
