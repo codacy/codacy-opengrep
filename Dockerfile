@@ -21,7 +21,7 @@ RUN upx --lzma /src/bin/codacy-opengrep
 
 # Final published image for the codacy-opengrep wrapper
 FROM python:3.12-slim
-RUN apt update && apt install -y tar bash cosign curl adduser
+RUN apt update && apt install -y tar bash cosign curl adduser file
 RUN adduser --uid 2004 --disabled-password --gecos "" docker
 
 # Download and extract opengrep binary from GitHub releases
@@ -36,6 +36,8 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
         curl -L -o /usr/local/bin/opengrep "https://github.com/opengrep/opengrep/releases/download/${OPENGREP_VERSION}/opengrep_manylinux_x86"; \
     fi \
     && chmod +x /usr/local/bin/opengrep
+
+RUN file /usr/local/bin/opengrep
 
 
 COPY --from=builder --chown=docker:docker /docs /docs

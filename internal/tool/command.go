@@ -64,9 +64,7 @@ func executeCommandForFiles(configurationFile *os.File, toolExecution codacy.Too
 
 func createCommand(configurationFile *os.File, sourceDir, language string, files []string) *exec.Cmd {
 	params := createCommandParameters(language, configurationFile, files)
-	//cmd := exec.Command("opengrep-core", params...)
 	cmd := exec.Command("/usr/local/bin/opengrep", params...)
-	//cmd := exec.Command("/Users/heliorocha/.opengrep/cli/v1.9.0/opengrep", params...)
 	cmd.Dir = sourceDir
 
 	return cmd
@@ -83,10 +81,10 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		"--json", //"-json_nodots",
 		"--config", configurationFile.Name(),
 		/// "-l", language,
-		"--timeout", "5",
-		"--timeout-threshold", "3",
+		"--timeout", "25",
+		"--timeout-threshold", "10",
 		"--max-target-bytes", "0",
-		"--taint-intrafile",
+		//"--taint-intrafile",
 		//"--pro",
 		//"--error-recovery",
 		//"--max-memory", "2560",
@@ -103,7 +101,6 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		cmdParams,
 		filesToAnalyse...,
 	)
-
 	return cmdParams
 }
 
