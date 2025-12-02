@@ -19,7 +19,9 @@ jobs:
 workflows:
   compile_test_deploy:
     jobs:
-      - codacy/checkout_and_version
+      - codacy/checkout_and_version:
+          name: checkout_and_version
+          release_branch: main
       - unit_tests:
           requires:
             - codacy/checkout_and_version
