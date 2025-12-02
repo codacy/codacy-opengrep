@@ -38,6 +38,7 @@ workflows:
             - publish_docker_local
       - codacy/publish_docker:
           context: CodacyDocker
+          release_branch: main
           requires:
             - unit_tests
             - plugins_test
