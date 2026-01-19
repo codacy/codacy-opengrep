@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="1.5">
+    <file name="UILayer.java">
+        <error source="codacy.java.i18n.enforce-localized-output" line="12"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.enforce-localized-output" line="22"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+    </file>
+    <file name="OrderApp.java">
+        <error source="codacy.java.i18n.enforce-localized-output" line="18"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.enforce-localized-output" line="30"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+    </file>
+    <file name="OrderService.java">
+        <error source="codacy.java.i18n.enforce-localized-output" line="13"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.enforce-localized-output" line="24"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+    </file>
+    <file name="PaymentService.java">
+        <error source="codacy.java.i18n.enforce-localized-output" line="17"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+    </file>
+    <file name="OrderList.js">
+        <error source="codacy.js.i18n.no-hardcoded-alert-concat" line="19"
+            message="Avoid hardcoded or concatenated strings in alerts."
+            severity="warning" />
+    </file>
+    <file name="Orderlist.jsx">
+        <error source="codacy.js.i18n.no-hardcoded-alert-concat" line="15"
+            message="Avoid hardcoded or concatenated strings in alerts."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-locale-date" line="46"
+            message="Avoid hardcoded locale strings in date/time formatting."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-number-format" line="52"
+            message="Avoid using toFixed for user-visible number formatting."
+            severity="warning" />
+    </file>
+</checkstyle>
+            
