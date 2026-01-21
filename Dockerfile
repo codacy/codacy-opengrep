@@ -1,4 +1,4 @@
-ARG OPENGREP_VERSION=v1.11.5
+ARG OPENGREP_VERSION=v1.15.1
 
 # Build codacy-opengrep wrapper
 FROM golang:1.23-alpine3.21 as builder
