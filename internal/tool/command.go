@@ -84,10 +84,10 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		"--timeout", "5",
 		"--timeout-threshold", "3",
 		"--max-target-bytes", "0",
-		//"--taint-intrafile",
+		"--taint-intrafile",
 		//"--pro",
 		//"--error-recovery",
-		//"--max-memory", "2560",
+		"--max-memory", "2560",
 		//"-j", strconv.Itoa(runtime.NumCPU()),
 		//"-fast",
 		// adding pro features
