@@ -45,5 +45,274 @@
             message="Avoid using toFixed for user-visible number formatting."
             severity="warning" />
     </file>
+    <file name="FalsePositive.jsx">
+        <error source="codacy.js.i18n.no-hardcoded-jsx-user-props" line="40"
+            message="Avoid hardcoded strings in JSX user-facing props."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-jsx-user-props" line="41"
+            message="Avoid hardcoded strings in JSX user-facing props."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-jsx-user-props" line="42"
+            message="Avoid hardcoded strings in JSX user-facing props."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-jsx-user-props" line="43"
+            message="Avoid hardcoded strings in JSX user-facing props."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-jsx-user-props" line="44"
+            message="Avoid hardcoded strings in JSX user-facing props."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-jsx-user-props" line="45"
+            message="Avoid hardcoded strings in JSX user-facing props."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-alert-concat" line="73"
+            message="Avoid hardcoded or concatenated strings in alerts."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-confirm-prompt" line="75"
+            message="Avoid hardcoded strings in confirm/prompt dialogs."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-confirm-prompt" line="79"
+            message="Avoid hardcoded strings in confirm/prompt dialogs."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-console-error" line="143"
+            message="Avoid hardcoded strings in console.error."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-console-error" line="144"
+            message="Avoid hardcoded strings in console.error."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-console-error" line="145"
+            message="Avoid hardcoded strings in console.error."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-throw-error" line="177"
+            message="Avoid hardcoded strings in Error constructors."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-throw-error" line="181"
+            message="Avoid hardcoded strings in Error constructors."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-throw-error" line="187"
+            message="Avoid hardcoded strings in Error constructors."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-number-format" line="222"
+            message="Avoid using toFixed for user-visible number formatting."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-number-format" line="224"
+            message="Avoid using toFixed for user-visible number formatting."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-alert-concat" line="256"
+            message="Avoid hardcoded or concatenated strings in alerts."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-console-error" line="264"
+            message="Avoid hardcoded strings in console.error."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-throw-error" line="265"
+            message="Avoid hardcoded strings in Error constructors."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-jsx-user-props" line="273"
+            message="Avoid hardcoded strings in JSX user-facing props."
+            severity="warning" />
+        <error source="codacy.js.i18n.no-hardcoded-number-format" line="275"
+            message="Avoid using toFixed for user-visible number formatting."
+            severity="warning" />
+    </file>
+    <file name="Javai18nPotentialsIssues.java">
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="22"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="26"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="30"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="34"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="70"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="74"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="78"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="82"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-stringbuilder-append" line="111"
+            message="Avoid hardcoded natural language strings in StringBuilder.append."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-stringbuilder-append" line="117"
+            message="Avoid hardcoded natural language strings in StringBuilder.append."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-stringbuilder-append" line="118"
+            message="Avoid hardcoded natural language strings in StringBuilder.append."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-stringbuilder-append" line="124"
+            message="Avoid hardcoded natural language strings in StringBuilder.append."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-date-format" line="162"
+            message="Avoid hardcoded date format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-date-format" line="166"
+            message="Avoid hardcoded date format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-date-format" line="170"
+            message="Avoid hardcoded date format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-date-format" line="174"
+            message="Avoid hardcoded date format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-decimal-format" line="196"
+            message="Avoid hardcoded number format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-decimal-format" line="200"
+            message="Avoid hardcoded number format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-decimal-format" line="204"
+            message="Avoid hardcoded number format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-decimal-format" line="208"
+            message="Avoid hardcoded number format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="228"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="235"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="242"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="274"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="278"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="282"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="286"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-exception-message" line="310"
+            message="Avoid hardcoded strings in exception messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-exception-message" line="314"
+            message="Avoid hardcoded strings in exception messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-exception-message" line="318"
+            message="Avoid hardcoded strings in exception messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-exception-message" line="323"
+            message="Avoid hardcoded strings in exception messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="352"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="356"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="360"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="364"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="368"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="372"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.enforce-localized-output" line="387"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-exception-message" line="392"
+            message="Avoid hardcoded strings in exception messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="400"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="404"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="408"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="412"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="416"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="420"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="424"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="428"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="451"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="453"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="459"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="461"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="467"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="469"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-stringbuilder-append" line="509"
+            message="Avoid hardcoded natural language strings in StringBuilder.append."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-decimal-format" line="514"
+            message="Avoid hardcoded number format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-stringbuilder-append" line="517"
+            message="Avoid hardcoded natural language strings in StringBuilder.append."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-return-string" line="526"
+            message="Avoid returning hardcoded natural language strings."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-decimal-format" line="530"
+            message="Avoid hardcoded number format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-string-concat" line="534"
+            message="Avoid hardcoded strings in string concatenation for user-facing output."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-exception-message" line="540"
+            message="Avoid hardcoded strings in exception messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-exception-message" line="544"
+            message="Avoid hardcoded strings in exception messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-date-format" line="548"
+            message="Avoid hardcoded date format patterns."
+            severity="warning" />
+        <error source="codacy.java.i18n.enforce-localized-output" line="552"
+            message="Use localized messages instead of hardcoded strings."
+            severity="warning" />
+    </file>
+    <file name="OrderController.java">
+        <error source="codacy.java.i18n.no-hardcoded-map-of" line="28"
+            message="Avoid hardcoded strings in Map.of(). Use ResourceBundle.getString() or a localization key for user-facing messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-map-of" line="32"
+            message="Avoid hardcoded strings in Map.of(). Use ResourceBundle.getString() or a localization key for user-facing messages."
+            severity="warning" />
+        <error source="codacy.java.i18n.no-hardcoded-map-put" line="13"
+            message="Avoid hardcoded strings in Map.put(). Use ResourceBundle.getString() or a localization key for user-facing messages."
+            severity="warning" />
+    </file>
 </checkstyle>
-            

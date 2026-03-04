@@ -106,6 +106,242 @@ rules:
       confidence: LOW
       likelihood: HIGH
 
+  - id: codacy.js.i18n.no-hardcoded-confirm-prompt
+    severity: WARNING
+    languages:
+      - js
+      - ts
+    patterns:
+      - pattern-either:
+          - pattern: confirm("...")
+          - pattern: window.confirm("...")
+          - pattern: prompt("...")
+          - pattern: window.prompt("...")
+      - pattern-not: confirm(t(...))
+      - pattern-not: prompt(t(...))
+    message: >-
+      Avoid hardcoded strings in confirm/prompt dialogs. Use an i18n translation function (e.g., t("key")) with interpolation.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded strings in confirm/prompt dialogs to enforce localization
+      technology:
+        - javascript
+        - typescript
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.js.i18n.no-hardcoded-jsx-user-props
+    severity: WARNING
+    languages:
+      - js
+      - ts
+    patterns:
+      - pattern-either:
+          - pattern: <$EL placeholder="$STR" ... />
+          - pattern: <$EL alt="$STR" ... />
+          - pattern: <$EL aria-label="$STR" ... />
+          - pattern: <$EL label="$STR" ... />
+          - pattern: <$EL title="$STR" ... />
+      - metavariable-regex:
+          metavariable: $STR
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+    message: >-
+      Avoid hardcoded strings in JSX user-facing props. Use an i18n translation function (e.g., t("key")).
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded strings in JSX props like placeholder, alt, aria-label, label, and title
+      technology:
+        - javascript
+        - typescript
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.js.i18n.no-hardcoded-console-error
+    severity: WARNING
+    languages:
+      - js
+      - ts
+    patterns:
+      - pattern: console.error("$MSG")
+      - metavariable-regex:
+          metavariable: $MSG
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+    message: >-
+      Avoid hardcoded strings in console.error. Use an i18n translation function (e.g., t("key")).
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in console.error calls
+      technology:
+        - javascript
+        - typescript
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: MEDIUM
+
+  - id: codacy.js.i18n.no-hardcoded-throw-error
+    severity: WARNING
+    languages:
+      - js
+      - ts
+    patterns:
+      - pattern: throw new Error("$MSG")
+      - metavariable-regex:
+          metavariable: $MSG
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+    message: >-
+      Avoid hardcoded strings in Error constructors. Use an i18n translation function (e.g., t("key")).
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in Error constructor calls
+      technology:
+        - javascript
+        - typescript
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: MEDIUM
+
+  - id: codacy.java.i18n.no-hardcoded-date-format
+    severity: WARNING
+    languages:
+      - java
+    pattern-either:
+      - pattern: new SimpleDateFormat("...")
+      - pattern: DateTimeFormatter.ofPattern("...")
+    message: >-
+      Avoid hardcoded date format patterns. Use DateTimeFormatter.ofLocalizedDate() or DateTimeFormatter.ofLocalizedDateTime() for locale-aware formatting.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded date format patterns that are not locale-aware
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: HIGH
+      likelihood: HIGH
+
+  - id: codacy.java.i18n.no-hardcoded-decimal-format
+    severity: WARNING
+    languages:
+      - java
+    pattern-either:
+      - pattern: new DecimalFormat("...")
+      - patterns:
+          - pattern: String.format("$FMT", ...)
+          - metavariable-regex:
+              metavariable: $FMT
+              regex: '%[0-9.]*[fd]'
+    message: >-
+      Avoid hardcoded number format patterns. Use NumberFormat.getInstance(locale) or locale-aware formatting for user-visible numbers.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded decimal format patterns and String.format with numeric format specifiers
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: MEDIUM
+      likelihood: HIGH
+
+  - id: codacy.java.i18n.no-hardcoded-exception-message
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern: throw new $EX("$MSG");
+      - metavariable-regex:
+          metavariable: $MSG
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+      - pattern-not: throw new $EX($BUNDLE.getString(...));
+    message: >-
+      Avoid hardcoded strings in exception messages. Use ResourceBundle.getString() or a localization key.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in exception constructors
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.java.i18n.no-hardcoded-return-string
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern: return "$STR";
+      - metavariable-regex:
+          metavariable: $STR
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+      - pattern-not: return $BUNDLE.getString(...);
+    message: >-
+      Avoid returning hardcoded natural language strings. Use ResourceBundle.getString() or a localization key.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings returned from methods
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.java.i18n.no-hardcoded-string-concat
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: return "$LIT" + ...;
+              - metavariable-regex:
+                  metavariable: $LIT
+                  regex: '^[A-Z](?![a-z]+\[)[a-z].*'
+          - patterns:
+              - pattern: return ... + "$LIT";
+              - metavariable-regex:
+                  metavariable: $LIT
+                  regex: '^\s(?!.*\b(?:SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN)\b).*[a-z]{2}'
+      - pattern-not: return $BUNDLE.getString(...) + ...;
+    message: >-
+      Avoid hardcoded strings in string concatenation for user-facing output. Use ResourceBundle.getString() with MessageFormat.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in return concatenation
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.java.i18n.no-hardcoded-stringbuilder-append
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern: $SB.append("$STR");
+      - metavariable-regex:
+          metavariable: $STR
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|ORDER)[^.]*\s[^.]*'
+    message: >-
+      Avoid hardcoded natural language strings in StringBuilder.append. Use ResourceBundle.getString() or MessageFormat.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in StringBuilder.append calls
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
   - id: codacy.js.i18n.no-raw-jsx-text
     severity: WARNING
     languages:
@@ -124,4 +360,75 @@ rules:
       impact: MEDIUM
       confidence: LOW
       likelihood: MEDIUM
-  
+
+  - id: codacy.java.i18n.no-hardcoded-map-put
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern: $MAP.put("$KEY", "$VALUE");
+      - metavariable-regex:
+          metavariable: $VALUE
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+      - pattern-not: $MAP.put("$KEY", $BUNDLE.getString(...));
+    message: >-
+      Avoid hardcoded strings in Map.put(). Use ResourceBundle.getString() or a localization key for user-facing messages.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in Map.put() calls that should be localized
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.java.i18n.no-hardcoded-map-of
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Map.of(..., "$VALUE", ...)
+          - pattern: Map.of("$KEY", "$VALUE")
+      - metavariable-regex:
+          metavariable: $VALUE
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+      - pattern-not: Map.of(..., $BUNDLE.getString(...), ...)
+    message: >-
+      Avoid hardcoded strings in Map.of(). Use ResourceBundle.getString() or a localization key for user-facing messages.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in Map.of() calls that should be localized
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.java.i18n.no-hardcoded-response-body
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: ResponseEntity.ok(Map.of(..., "$VALUE", ...))
+          - pattern: ResponseEntity.status(...).body(Map.of(..., "$VALUE", ...))
+          - pattern: ResponseEntity.$METHOD(Map.of(..., "$VALUE", ...))
+      - metavariable-regex:
+          metavariable: $VALUE
+          regex: '^(?!SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|ERR)[^.]*\s[^.]*'
+      - pattern-not: ResponseEntity.ok(Map.of(..., $BUNDLE.getString(...), ...))
+      - pattern-not: ResponseEntity.status(...).body(Map.of(..., $BUNDLE.getString(...), ...))
+    message: >-
+      Avoid hardcoded strings in ResponseEntity body maps. Use ResourceBundle.getString() or a localization key for user-facing messages.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded natural language strings in Spring ResponseEntity responses that should be localized
+      technology:
+        - java
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH

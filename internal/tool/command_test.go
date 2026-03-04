@@ -45,7 +45,7 @@ func TestCreateCommandParameters(t *testing.T) {
 		//"-lang", language,
 		"--config", configurationFile.Name(),
 		"--timeout", "5",
-		"--timeout-threshold", "3",
+		"--timeout-threshold", "5",
 		"--max-target-bytes", "0",
 		// "-error_recovery",
 		// "-max_memory", "2560",

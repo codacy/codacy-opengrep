@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="1.5">
+    <file name="ExoticCode01.java">
+        <error source="codacy.generic.sql.exotic.hardcoded-sql-values" line="16"
+            message="Hardcoded Language, Currency, or Org_Id values detected in SQL. Avoid hardcoding such values; use parameters or configuration instead."
+            severity="warning" />
+        <error source="codacy.generic.sql.exotic.hardcoded-sql-values" line="18"
+            message="Hardcoded Language, Currency, or Org_Id values detected in SQL. Avoid hardcoding such values; use parameters or configuration instead."
+            severity="warning" />
+    </file>
+</checkstyle>
