@@ -121,6 +121,7 @@ func getCodacyRules(docsDir string) (*ParsedSemgrepRules, error) {
 		"codacy-rules.yaml",
 		"codacy-rules-i18n.yaml",
 		"codacy-rules-ai.yaml",
+		"codacy-rules-exotic.yaml",
 	}
 	for _, file := range customRulesFiles {
 		filePath, _ := filepath.Abs(path.Join(docsDir, file))

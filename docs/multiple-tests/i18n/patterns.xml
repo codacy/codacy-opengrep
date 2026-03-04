@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module name="root">
     <module name="codacy.java.i18n.enforce-localized-output" />
+    <module name="codacy.java.i18n.no-hardcoded-date-format" />
+    <module name="codacy.java.i18n.no-hardcoded-decimal-format" />
+    <module name="codacy.java.i18n.no-hardcoded-exception-message" />
+    <module name="codacy.java.i18n.no-hardcoded-return-string" />
+    <module name="codacy.java.i18n.no-hardcoded-string-concat" />
+    <module name="codacy.java.i18n.no-hardcoded-stringbuilder-append" />
     <module name="codacy.js.i18n.no-hardcoded-alert-concat" />
+    <module name="codacy.js.i18n.no-hardcoded-confirm-prompt" />
+    <module name="codacy.js.i18n.no-hardcoded-console-error" />
+    <module name="codacy.js.i18n.no-hardcoded-jsx-user-props" />
     <module name="codacy.js.i18n.no-hardcoded-locale-date" />
     <module name="codacy.js.i18n.no-hardcoded-number-format" />
+    <module name="codacy.js.i18n.no-hardcoded-throw-error" />
+    <module name="codacy.java.i18n.no-hardcoded-map-put" />
+    <module name="codacy.java.i18n.no-hardcoded-map-of" />
 </module>

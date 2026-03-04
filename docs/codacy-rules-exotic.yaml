@@ -1,0 +1,28 @@
+rules:
+  - id: codacy.generic.sql.exotic.hardcoded-sql-values
+    severity: WARNING
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          # Complete SQL queries with hardcoded values
+          - pattern-regex: "(?i)^[^\n]*(?:SELECT|INSERT|UPDATE|DELETE|FROM)[^\n]*\\b(?:85|4322385|86|4323386|1628302)\\b"
+          - pattern-regex: "(?i)^[^\n]*(?:SELECT|INSERT|UPDATE|DELETE|FROM)[^\n]*['\"](?:IMO|CVO|SMO|US|FRC)['\"]"
+          # SQL fragments with WHERE/AND/OR and hardcoded values
+          - pattern-regex: "(?i)^[^\n]*(?:WHERE|AND|OR|SET|VALUES|IN)\\s+[^\n]*\\b(?:85|4322385|86|4323386|1628302)\\b"
+          - pattern-regex: "(?i)^[^\n]*(?:WHERE|AND|OR|SET|VALUES|IN)\\s+[^\n]*['\"](?:IMO|CVO|SMO|US|FRC)['\"]"
+          # Column assignments with hardcoded values
+          - pattern-regex: "(?i)^[^\n]*(?:org_id|organization_id|language|currency|mode)\\s*=\\s*(?:85|4322385|86|4323386|1628302)\\b"
+          - pattern-regex: "(?i)^[^\n]*(?:org_id|organization_id|language|currency|mode)\\s*=\\s*['\"](?:IMO|CVO|SMO|US|FRC)['\"]"
+      - pattern-not-regex: '^\s*(?://|--|/\*|\*)'
+    message: >-
+      Hardcoded Language, Currency, or Org_Id values detected in SQL. Avoid hardcoding such values; use parameters or configuration instead.
+    metadata:
+      category: security
+      subcategory: sql
+      description: Flags hardcoded Language, Currency, or Org_Id values in SQL queries that should be parameterized
+      technology:
+        - sql
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH

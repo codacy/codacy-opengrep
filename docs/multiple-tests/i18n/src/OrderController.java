@@ -1,5 +1,8 @@
 // OrderController.java (excerpt with intentional i18n gaps)
 
+public class OrderController {
+
+   
 @PostMapping
 public ResponseEntity<?> createOrder(@Valid @RequestBody Order order) {
     order.setId(idGen.incrementAndGet());
@@ -27,4 +30,5 @@ public ResponseEntity<?> updateOrder(@PathVariable Long id, @Valid @RequestBody 
 
     // ❌ Hardcoded error message
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Order not found"));
+}
 }

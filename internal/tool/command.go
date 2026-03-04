@@ -87,7 +87,7 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		"--taint-intrafile",
 		//"--pro",
 		//"--error-recovery",
-		"--max-memory", "2560",
+		"--max-memory", "5000",
 		//"-j", strconv.Itoa(runtime.NumCPU()),
 		//"-fast",
 		// adding pro features
