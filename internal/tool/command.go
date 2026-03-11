@@ -80,7 +80,7 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		"scan",
 		"--json", //"-json_nodots",
 		"--config", configurationFile.Name(),
-		"-l", language,
+		//"-l", language,
 		"--timeout", "5",
 		"--timeout-threshold", "50",
 		"--max-target-bytes", "0",
