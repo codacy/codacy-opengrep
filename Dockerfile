@@ -1,7 +1,7 @@
-ARG OPENGREP_VERSION=v1.16.2
+ARG OPENGREP_VERSION=v1.16.4
 
 # Build codacy-opengrep wrapper
-FROM golang:1.23-alpine3.21 as builder
+FROM golang:1.23-alpine3.21 AS builder
 WORKDIR /src
 COPY go.mod go.mod
 COPY go.sum go.sum
@@ -14,7 +14,7 @@ COPY docs /docs
 RUN go run ./cmd/docgen -docFolder /docs
 
 # Compress binaries for smaller image size
-FROM alpine:3.21 as compressor
+FROM alpine:3.21 AS compressor
 RUN apk add --no-cache upx
 COPY --from=builder /src/bin/codacy-opengrep /src/bin/codacy-opengrep
 RUN upx --lzma /src/bin/codacy-opengrep
