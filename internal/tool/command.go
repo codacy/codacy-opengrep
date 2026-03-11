@@ -8,8 +8,6 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"runtime"
-	"strconv"
 	"strings"
 
 	codacy "github.com/codacy/codacy-engine-golang-seed/v6"
@@ -87,10 +85,10 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		"--timeout-threshold", "50",
 		"--max-target-bytes", "0",
 		"--taint-intrafile",
-		"--error-recovery",
+		//"--error-recovery",
 		"--max-memory", "5000",
-		"-j", strconv.Itoa(runtime.NumCPU()),
-		"-fast",
+		//"-j", strconv.Itoa(runtime.NumCPU()),
+		//"-fast",
 		// adding pro features
 		//"--historical-secrets",
 		//"-deep_inter_file",
