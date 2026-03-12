@@ -191,15 +191,11 @@ func appendErrorToResult(result []codacy.Result, semgrepOutput SemgrepOutput) []
 		// The error message already with sizeMessage length
 		truncatedMessage := semgrepError.Message[:sizeMessage]
 
-		// Append the error to the result
+		// Append the error to the result but only if it doesn't contain
+		// "Syntax error at line" to avoid logging syntax errors that are not relevant for the user
 		if !strings.Contains(truncatedMessage, "Syntax error at line") {
 			result = append(result, codacy.FileError{
 				Message: truncatedMessage,
-				File:    semgrepError.Location.Path,
-			})
-		} else {
-			result = append(result, codacy.FileError{
-				Message: "The file could not be parsed, likely due to syntax errors.",
 				File:    semgrepError.Location.Path,
 			})
 		}
