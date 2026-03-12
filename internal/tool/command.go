@@ -80,12 +80,11 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		"scan",
 		"--json", //"-json_nodots",
 		"--config", configurationFile.Name(),
-		/// "-l", language,
-		"--timeout", "5",
-		"--timeout-threshold", "50",
+		//"-l", language,
+		"--timeout", "10",
+		"--timeout-threshold", "5",
 		"--max-target-bytes", "0",
 		"--taint-intrafile",
-		//"--pro",
 		//"--error-recovery",
 		"--max-memory", "5000",
 		//"-j", strconv.Itoa(runtime.NumCPU()),
@@ -95,6 +94,7 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		//"-deep_inter_file",
 		//"--deep-intra-file",
 		//"--secrets",
+		//"--pro",
 	}
 	// adding files to analyse
 	cmdParams = append(
@@ -191,11 +191,14 @@ func appendErrorToResult(result []codacy.Result, semgrepOutput SemgrepOutput) []
 		// The error message already with sizeMessage length
 		truncatedMessage := semgrepError.Message[:sizeMessage]
 
-		// Append the error to the result
-		result = append(result, codacy.FileError{
-			Message: truncatedMessage,
-			File:    semgrepError.Location.Path,
-		})
+		// Append the error to the result but only if it doesn't contain
+		// "Syntax error at line" to avoid logging syntax errors that are not relevant for the user
+		if !strings.Contains(truncatedMessage, "Syntax error at line") {
+			result = append(result, codacy.FileError{
+				Message: truncatedMessage,
+				File:    semgrepError.Location.Path,
+			})
+		}
 	}
 	return result
 }
