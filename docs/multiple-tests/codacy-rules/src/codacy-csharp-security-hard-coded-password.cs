@@ -7,8 +7,10 @@ namespace SecurityExample
         static void Main(string[] args)
         {
             var password = "password"; // Issue: Hardcoded password
+            var api_key = "api_key"; // Issue: Hardcoded API key
 
             Console.WriteLine("This is a security risk: " + password);
+            Console.WriteLine("This is a security risk: " + api_key);
         }
 
         public static bool? IsRegular(bool freqNoneOrNotPeriodic, bool freqPeriodical, IFrequency frequency)

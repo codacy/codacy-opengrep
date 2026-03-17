@@ -2,15 +2,18 @@
 <checkstyle version="1.5">
     <file name="codacy-csharp-security-hard-coded-password.cs">
         <error source="codacy.csharp.security.hard-coded-password" line="9" message="Hardcoded passwords are a security risk." severity="error" />
-        <error source="codacy.csharp.security.null-dereference" line="23" message="Potential null dereference detected." severity="error" />
-        <error source="codacy.csharp.security.null-dereference" line="26" message="Potential null dereference detected." severity="error" />
-        <error source="codacy.csharp.security.null-dereference" line="26" message="Potential null dereference detected." severity="error" />
+        <error source="codacy.csharp.security.hard-coded-password" line="10" message="Hardcoded passwords are a security risk." severity="error" />
+        <error source="codacy.csharp.security.null-dereference" line="25" message="Potential null dereference detected." severity="error" />
+        <error source="codacy.csharp.security.null-dereference" line="28" message="Potential null dereference detected." severity="error" />
+        <error source="codacy.csharp.security.null-dereference" line="28" message="Potential null dereference detected." severity="error" />
     </file>
     <file name="test_find_all_passwords_and_empty_string.pls">
-        <error source="codacy.generic.plsql.empty-strings" line="29" message="Empty strings can lead to unexpected behavior and should be handled carefully." severity="warning" />
+        <error source="codacy.generic.plsql.empty-strings" line="33" message="Empty strings can lead to unexpected behavior and should be handled carefully." severity="warning" />
         <error source="codacy.generic.plsql.find-all-passwords" line="6" message="Hardcoded or exposed passwords are a security risk." severity="error" />
         <error source="codacy.generic.plsql.find-all-passwords" line="7" message="Hardcoded or exposed passwords are a security risk." severity="error" />
         <error source="codacy.generic.plsql.find-all-passwords" line="8" message="Hardcoded or exposed passwords are a security risk." severity="error" />
+        <error source="codacy.generic.plsql.find-all-passwords" line="9" message="Hardcoded or exposed passwords are a security risk." severity="error" />
+        <error source="codacy.generic.plsql.find-all-passwords" line="10" message="Hardcoded or exposed passwords are a security risk." severity="error" />
     </file>
     <file name="test_resource_injection.pls">
         <error source="codacy.generic.plsql.resource-injection" line="16" message="Resource injection detected." severity="error" />

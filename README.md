@@ -1,4 +1,4 @@
-# Codacy Semgrep
+# Codacy Opengrep
 
 This is the docker engine we use at Codacy to have [Opengrep](https://github.com/opengrep/opengrep) support.
 
