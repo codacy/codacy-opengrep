@@ -6,6 +6,8 @@ CREATE OR REPLACE PACKAGE find_passwords AS
   password1 VARCHAR2(100) := 'Password123!';
   password2 VARCHAR2(100) := 'Admin@456';
   password3 VARCHAR2(100) := 'UserPass789';
+  API_KEY VARCHAR2(100) := 'newAPI_KEY43432';
+  API_SECRET VARCHAR2(100) := 'newAPI_SECRET43432';
 
   -- Procedure to output passwords
   PROCEDURE output_passwords;
@@ -19,6 +21,8 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Password1: ' || password1);
     DBMS_OUTPUT.PUT_LINE('Password2: ' || password2);
     DBMS_OUTPUT.PUT_LINE('Password3: ' || password3);
+    DBMS_OUTPUT.PUT_LINE('Password4: ' || API_KEY);
+    DBMS_OUTPUT.PUT_LINE('Password5: ' || API_KEY);
 END output_passwords;
 END find_passwords;
 /
