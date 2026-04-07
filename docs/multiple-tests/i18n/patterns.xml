@@ -16,4 +16,10 @@
     <module name="codacy.js.i18n.no-hardcoded-throw-error" />
     <module name="codacy.java.i18n.no-hardcoded-map-put" />
     <module name="codacy.java.i18n.no-hardcoded-map-of" />
+    <module name="codacy.python.i18n.no-hardcoded-print-concat" />
+    <module name="codacy.python.i18n.no-hardcoded-strftime" />
+    <module name="codacy.python.i18n.no-hardcoded-number-format" />
+    <module name="codacy.cpp.i18n.no-hardcoded-cout" />
+    <module name="codacy.cpp.i18n.no-hardcoded-strftime" />
+    <module name="codacy.cpp.i18n.no-hardcoded-number-format" />
 </module>

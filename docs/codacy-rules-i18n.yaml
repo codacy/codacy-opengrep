@@ -432,3 +432,109 @@ rules:
       impact: MEDIUM
       confidence: LOW
       likelihood: HIGH
+
+  - id: codacy.python.i18n.no-hardcoded-print-concat
+    severity: WARNING
+    languages:
+      - python
+    pattern-either:
+      - pattern: print("..." + ...)
+      - pattern: print(... + "...")
+    message: >-
+      Avoid hardcoded or concatenated strings in print. Use an i18n translation function (e.g., _("key")) with .format() or f-strings.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded string literals concatenated in print calls to enforce localization
+      technology:
+        - python
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.python.i18n.no-hardcoded-strftime
+    severity: WARNING
+    languages:
+      - python
+    pattern: $X.strftime("...")
+    message: >-
+      Avoid hardcoded date format strings in strftime. Use locale.nl_langinfo(locale.D_FMT) or similar locale-aware formatting.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded date format strings passed to strftime to enforce locale-aware date formatting
+      technology:
+        - python
+      impact: MEDIUM
+      confidence: HIGH
+      likelihood: HIGH
+
+  - id: codacy.python.i18n.no-hardcoded-number-format
+    severity: WARNING
+    languages:
+      - python
+    pattern-regex: ":\\.[0-9]+f"
+    message: >-
+      Avoid using :.Nf format specifiers for user-visible number formatting. Use locale.currency() or locale.format_string() for locale-aware formatting.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags :.Nf format specifiers in f-strings used for user-visible numbers instead of locale-aware formatting
+      technology:
+        - python
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.cpp.i18n.no-hardcoded-cout
+    severity: WARNING
+    languages:
+      - cpp
+    pattern: std::cout << "$MSG"
+    message: >-
+      Avoid hardcoded strings in std::cout. Use a localization function or resource bundle for user-facing output.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded string literals streamed directly to std::cout to enforce localization
+      technology:
+        - cpp
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
+
+  - id: codacy.cpp.i18n.no-hardcoded-strftime
+    severity: WARNING
+    languages:
+      - cpp
+    pattern-either:
+      - pattern: std::strftime($BUF, $SIZE, "$FMT", $TIME);
+      - pattern: strftime($BUF, $SIZE, "$FMT", $TIME);
+    message: >-
+      Avoid hardcoded date format strings in strftime. Use locale-aware date formatting (e.g., std::put_time with a locale-imbued stream).
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags hardcoded date format strings passed to strftime to enforce locale-aware date formatting
+      technology:
+        - cpp
+      impact: MEDIUM
+      confidence: HIGH
+      likelihood: HIGH
+
+  - id: codacy.cpp.i18n.no-hardcoded-number-format
+    severity: WARNING
+    languages:
+      - cpp
+    pattern: std::setprecision($N)
+    message: >-
+      Avoid using std::setprecision for user-visible number formatting. Imbue the stream with a locale and use std::use_facet<std::numpunct> for locale-aware output.
+    metadata:
+      category: codestyle
+      subcategory: i18n
+      description: Flags std::setprecision used for user-visible number formatting instead of locale-aware alternatives
+      technology:
+        - cpp
+      impact: MEDIUM
+      confidence: LOW
+      likelihood: HIGH
