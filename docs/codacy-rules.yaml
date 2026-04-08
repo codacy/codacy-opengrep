@@ -564,7 +564,7 @@ rules:
       description: >
         Detects Ingress resources configured to use the Ingress NGINX controller.
         Ingress NGINX is scheduled for retirement (no fixes after March 2026).
-      impact: MEDIUM
+      impact: HIGH
       confidence: HIGH
       references:
         - https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/
@@ -591,7 +591,7 @@ rules:
       description: >
         Detects IngressClass objects wired to the Ingress NGINX controller.
         Ingress NGINX is scheduled for retirement (no fixes after March 2026).
-      impact: MEDIUM
+      impact: HIGH
       confidence: HIGH
       references:
         - https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/
@@ -620,7 +620,7 @@ rules:
       description: >
         Detects Kubernetes resources labelled as part of the Ingress NGINX
         controller stack. Ingress NGINX is scheduled for retirement (no fixes after March 2026).
-      impact: MEDIUM
+      impact: HIGH
       confidence: HIGH
       references:
         - https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/
