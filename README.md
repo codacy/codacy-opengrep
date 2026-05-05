@@ -30,6 +30,8 @@ docker run -it -v $srcDir:/src codacy-opengrep:latest
 go run ./cmd/docgen
 ```
 
+
+
 ## Test
 
 We use the [codacy-plugins-test](https://github.com/codacy/codacy-plugins-test) to test our external tools integration.
