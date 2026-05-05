@@ -13,6 +13,7 @@ import (
 const (
 	toolName        = "opengrep"
 	toolVersionFile = ".tool_version"
+	testConst       = "testing"
 )
 
 type DocumentationGenerator interface {
