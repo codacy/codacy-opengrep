@@ -23,7 +23,7 @@ docker run -it -v $srcDir:/src codacy-opengrep:latest
 
 1. Update the version in `.tool_version`
 
-2. Get the latest commit for the `release` branch from the github.com/semgrep/semgrep-rules repo and update it in DocGenerator file `internal/docgen/parsing.go`.
+2. Get the latest commit for the `release` branch from the github.com/opengrep/opengrep-rules repo and update it in DocGenerator file `internal/docgen/parsing.go`.
 
 3.  Run the DocGenerator:
 ```bash

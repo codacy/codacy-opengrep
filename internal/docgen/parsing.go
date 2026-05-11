@@ -46,17 +46,11 @@ type SemgrepRuleMetadata struct {
 type SemgrepRules []SemgrepRule
 
 func semgrepRules(destinationDir string) ([]PatternWithExplanation, *ParsedSemgrepRules, error) {
-	fmt.Println("Getting Semgrep rules...")
+	fmt.Println("Getting Opengrep rules...")
 	parsedSemgrepRegistryRules, err := getSemgrepRegistryRules()
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// fmt.Println("Getting Semgrep default rules...")
-	// semgrepRegistryDefaultRules, err := getSemgrepRegistryDefaultRules()
-	// if err != nil {
-	// 	return nil, nil, err
-	// }
 
 	fmt.Println("Getting GitLab rules...")
 	parsedGitLabRules, err := getGitLabRules()
@@ -96,8 +90,8 @@ func semgrepRules(destinationDir string) ([]PatternWithExplanation, *ParsedSemgr
 
 func getSemgrepRegistryRules() (*ParsedSemgrepRules, error) {
 	return getRules(
-		"https://github.com/semgrep/semgrep-rules",
-		"4e3b8820d38983199db46cd8551bf51067b7fe16",
+		"https://github.com/opengrep/opengrep-rules",
+		"f1d2b562b414783763fd02a6ed2736eaed622efa",
 		isValidSemgrepRegistryRuleFile,
 		prefixRuleIDWithPath)
 }
