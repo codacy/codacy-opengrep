@@ -323,8 +323,8 @@ rules:
       - generic
     patterns:
       - pattern-either:
-          - pattern-regex: "(?i)lookup_type(?![^;]{0,200}language\\s*=)"  
-          - pattern-regex: "apps\\.fnd_lookup_values"                     
+        - pattern-regex: "(?i)\\bselect\\b(?!(?:[^;\\n]*\\n)*(?:(?!--)[^;\\n])*\\blanguage\\b)(?:[^;\\n]*\\n)*(?:(?!--)[^;\\n])*\\blookup_type\\b"
+        - pattern-regex: "(?im)^(?:(?!(?:--|/\\*))[^\\n])*?apps\\.fnd_lookup_values"
     paths:
       include:
         - "*.sql"

@@ -46,17 +46,11 @@ type SemgrepRuleMetadata struct {
 type SemgrepRules []SemgrepRule
 
 func semgrepRules(destinationDir string) ([]PatternWithExplanation, *ParsedSemgrepRules, error) {
-	fmt.Println("Getting Semgrep rules...")
+	fmt.Println("Getting Opengrep rules...")
 	parsedSemgrepRegistryRules, err := getSemgrepRegistryRules()
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// fmt.Println("Getting Semgrep default rules...")
-	// semgrepRegistryDefaultRules, err := getSemgrepRegistryDefaultRules()
-	// if err != nil {
-	// 	return nil, nil, err
-	// }
 
 	fmt.Println("Getting GitLab rules...")
 	parsedGitLabRules, err := getGitLabRules()
@@ -96,8 +90,8 @@ func semgrepRules(destinationDir string) ([]PatternWithExplanation, *ParsedSemgr
 
 func getSemgrepRegistryRules() (*ParsedSemgrepRules, error) {
 	return getRules(
-		"https://github.com/semgrep/semgrep-rules",
-		"4ccd3b9cce2321a5fe3793868e4c2d4cfa5e9c43",
+		"https://github.com/opengrep/opengrep-rules",
+		"f1d2b562b414783763fd02a6ed2736eaed622efa",
 		isValidSemgrepRegistryRuleFile,
 		prefixRuleIDWithPath)
 }
@@ -412,6 +406,8 @@ func toCodacyLevel(r SemgrepRule) Level {
 		return Critical
 	case "WARNING":
 		return Medium
+	case "MEDIUM":
+		return Medium
 	case "INFO":
 		return Low
 	default:
@@ -561,6 +557,7 @@ func toCodacyLanguages(r SemgrepRule) []string {
 		"dockerfile":  "Dockerfile",
 		"elixir":      "Elixir",
 		"go":          "Go",
+		"generic":     "Go",
 		"java":        "Java",
 		"javascript":  "Javascript",
 		"js":          "Javascript",
@@ -581,11 +578,12 @@ func toCodacyLanguages(r SemgrepRule) []string {
 		"typescript":  "TypeScript",
 		"visualforce": "VisualForce",
 		"yaml":        "YAML",
+		"xml":         "XML",
 	}
 
 	codacyLanguages := lo.Map(
 		lo.Filter(r.Languages, func(s string, _ int) bool {
-			return s != "generic" && s != "regex" && // internal rules?
+			return s != "regex" && // internal rules?
 				s != "lua" && s != "ocaml" && s != "html" && s != "solidity" // not supported by Codacy
 		}),
 		func(s string, _ int) string {
