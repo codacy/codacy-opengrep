@@ -557,7 +557,6 @@ func toCodacyLanguages(r SemgrepRule) []string {
 		"dockerfile":  "Dockerfile",
 		"elixir":      "Elixir",
 		"go":          "Go",
-		"generic":     "Go",
 		"java":        "Java",
 		"javascript":  "Javascript",
 		"js":          "Javascript",
@@ -583,7 +582,7 @@ func toCodacyLanguages(r SemgrepRule) []string {
 
 	codacyLanguages := lo.Map(
 		lo.Filter(r.Languages, func(s string, _ int) bool {
-			return s != "regex" && // internal rules?
+			return s != "generic" && s != "regex" && // internal rules?
 				s != "lua" && s != "ocaml" && s != "html" && s != "solidity" // not supported by Codacy
 		}),
 		func(s string, _ int) string {
