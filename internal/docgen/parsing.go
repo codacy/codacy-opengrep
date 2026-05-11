@@ -97,7 +97,7 @@ func semgrepRules(destinationDir string) ([]PatternWithExplanation, *ParsedSemgr
 func getSemgrepRegistryRules() (*ParsedSemgrepRules, error) {
 	return getRules(
 		"https://github.com/semgrep/semgrep-rules",
-		"4ccd3b9cce2321a5fe3793868e4c2d4cfa5e9c43",
+		"4e3b8820d38983199db46cd8551bf51067b7fe16",
 		isValidSemgrepRegistryRuleFile,
 		prefixRuleIDWithPath)
 }
@@ -412,6 +412,8 @@ func toCodacyLevel(r SemgrepRule) Level {
 		return Critical
 	case "WARNING":
 		return Medium
+	case "MEDIUM":
+		return Medium
 	case "INFO":
 		return Low
 	default:
@@ -561,6 +563,7 @@ func toCodacyLanguages(r SemgrepRule) []string {
 		"dockerfile":  "Dockerfile",
 		"elixir":      "Elixir",
 		"go":          "Go",
+		"generic":     "Go",
 		"java":        "Java",
 		"javascript":  "Javascript",
 		"js":          "Javascript",
@@ -581,11 +584,12 @@ func toCodacyLanguages(r SemgrepRule) []string {
 		"typescript":  "TypeScript",
 		"visualforce": "VisualForce",
 		"yaml":        "YAML",
+		"xml":         "XML",
 	}
 
 	codacyLanguages := lo.Map(
 		lo.Filter(r.Languages, func(s string, _ int) bool {
-			return s != "generic" && s != "regex" && // internal rules?
+			return s != "regex" && // internal rules?
 				s != "lua" && s != "ocaml" && s != "html" && s != "solidity" // not supported by Codacy
 		}),
 		func(s string, _ int) string {
