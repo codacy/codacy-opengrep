@@ -21,11 +21,11 @@ rules:
     languages:
       - java
     patterns:
-        - pattern-either:
+      - pattern-either:
           - pattern: String $PASSWORD = "$VALUE";
-        - metavariable-regex:
-            metavariable: "$PASSWORD"
-            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|key).*"
+      - metavariable-regex:
+          metavariable: "$PASSWORD"
+          regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|parola|secret|pwd|(api|secret|private|access|aws|ssh|auth|session|encryption|decryption|gcp)[_-]?key).*"
     message: Hardcoded passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
     metadata:
       owasp:
@@ -45,7 +45,7 @@ rules:
           - pattern: var $PASSWORD = "$VALUE";
         - metavariable-regex:
             metavariable: "$PASSWORD"
-            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|key).*"
+            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|(api|secret|private|access|aws|ssh|auth|session|encryption|decryption|gcp)[_-]?key).*"
     message: Hardcoded passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
     metadata:
       owasp:
@@ -74,7 +74,7 @@ rules:
           - pattern: var $PASSWORD = `$VALUE`
         - metavariable-regex:
             metavariable: "$PASSWORD"
-            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|key).*"
+            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|(api|secret|private|access|aws|ssh|auth|session|encryption|decryption|gcp)[_-]?key).*"
     message: Hardcoded passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
     metadata:
       owasp:
@@ -105,7 +105,7 @@ rules:
           $PASSWORD VARCHAR2($LENGTH) := $...VALUE;
       - metavariable-regex:
           metavariable: "$PASSWORD"
-          regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|key).*"
+          regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|(api|secret|private|access|aws|ssh|auth|session|encryption|decryption|gcp)[_-]?key).*"
     options:
       generic_ellipsis_max_span: 0
     message: >
@@ -322,9 +322,9 @@ rules:
     languages:
       - generic
     patterns:
-      - pattern-either:
-        - pattern-regex: "(?i)\\bselect\\b(?!(?:[^;\\n]*\\n)*(?:(?!--)[^;\\n])*\\blanguage\\b)(?:[^;\\n]*\\n)*(?:(?!--)[^;\\n])*\\blookup_type\\b"
-        - pattern-regex: "(?im)^(?:(?!(?:--|/\\*))[^\\n])*?apps\\.fnd_lookup_values"
+      - pattern-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\bapps\\.fnd_lookup_values\\b"
+      - pattern-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\blookup_type\\b"
+      - pattern-not-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\blanguage\\b"
     paths:
       include:
         - "*.sql"
