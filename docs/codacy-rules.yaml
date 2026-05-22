@@ -625,7 +625,7 @@ rules:
       references:
         - https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/
   - id: codacy.c.security.avoid-std-system
-    languages: 
+    languages:
       - cpp
       - c
     severity: WARNING
