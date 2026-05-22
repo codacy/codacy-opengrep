@@ -20,6 +20,7 @@ workflows:
   compile_test_deploy:
     jobs:
       - codacy/checkout_and_version:
+          name: codacy/checkout_and_version
           release_branch: main
       - unit_tests:
           requires:
@@ -39,6 +40,7 @@ workflows:
             - publish_docker_local
       - codacy/publish_docker:
           context: CodacyDocker
+          release_branch: main
           requires:
             - unit_tests
             - plugins_test
