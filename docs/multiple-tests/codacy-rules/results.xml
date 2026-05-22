@@ -57,8 +57,8 @@
         <error source="codacy.bash.security.hard-coded-password" line="1" message="Hardcoded passwords are a security risk." severity="error" />
     </file>
     <file name="codacy-c-avoid-std-system.cpp"> 
-        <error source="codacy.c.security.avoid-std-system" line="26" message="Detected a call to the standard `system()` function. This is dangerous as it can lead to Command Injection if untrusted input is passed." severity="warning" />
-        <error source="codacy.c.security.avoid-std-system" line="29" message="Detected a call to the standard `system()` function. This is dangerous as it can lead to Command Injection if untrusted input is passed." severity="warning" />
-        <error source="codacy.c.security.avoid-std-system" line="32" message="Detected a call to the standard `system()` function. This is dangerous as it can lead to Command Injection if untrusted input is passed." severity="warning" />
+        <error source="codacy.c.security.avoid-std-system" line="26" message="Detected a call to the standard `system()` function." severity="warning" />
+        <error source="codacy.c.security.avoid-std-system" line="29" message="Detected a call to the standard `system()` function." severity="warning" />
+        <error source="codacy.c.security.avoid-std-system" line="32" message="Detected a call to the standard `system()` function." severity="warning" />
     </file>
 </checkstyle>
