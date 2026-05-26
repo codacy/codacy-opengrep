@@ -19,7 +19,7 @@ jobs:
 workflows:
   compile_test:
     jobs:
-      - codacy/checkout_and_version:
+      - codacy/checkout_and_version
 
   compile_test_deploy:
     jobs:
