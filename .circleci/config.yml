@@ -17,12 +17,11 @@ jobs:
           command: go test $(go list ./... | grep -v /docs/)
 
 workflows:
-
   compile_test_deploy:
     jobs:
       - codacy/checkout_and_version:
           name: codacy/checkout_and_version
-          release_branch: main
+          release_branch: ls/test
       - unit_tests:
           requires:
             - codacy/checkout_and_version
