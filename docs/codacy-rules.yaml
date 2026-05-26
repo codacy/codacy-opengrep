@@ -322,9 +322,13 @@ rules:
     languages:
       - generic
     patterns:
-      - pattern-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\bapps\\.fnd_lookup_values\\b"
-      - pattern-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\blookup_type\\b"
-      - pattern-not-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\blanguage\\b"
+      - pattern-either:
+          # Scenario 1: lookup_type WITHOUT language
+          - patterns:
+              - pattern-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\blookup_type\\b"
+              - pattern-not-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\blanguage\\b"
+          # Scenario 2: ANY use of apps.fnd_lookup_values
+          - pattern-regex: "(?im)^(?:(?!--|/\\*)[^\\n])*\\bapps\\.fnd_lookup_values\\b"
     paths:
       include:
         - "*.sql"
