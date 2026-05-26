@@ -647,4 +647,4 @@ rules:
         Detects calls to the standard `system()` function which can lead to Command Injection vulnerabilities.
         Ensure safe alternatives or proper input validation/sanitization is used.
       impact: MEDIUM
-      confidence: HIGH
+      confidence: LOW
