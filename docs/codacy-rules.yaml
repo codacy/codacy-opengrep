@@ -324,7 +324,7 @@ rules:
     patterns:
       - pattern-either:
           - pattern-regex: >-
-              (?is)(?:^|(?<=;))(?!(?:[^;]*?\n)*?[ \t]*(?:(?!--|/\*)[^\n;])*?\blanguage\b)[^;]*?\K\blookup_type\b
+              (?is)(?:^|(?<=;))(?!(?:[^;\n]*\n)*?[ \t]*(?:(?!--|/\*)[^\n;])*?\blanguage\b)[^;]*?\K\blookup_type\b
           - pattern-regex: >-
               (?im)^[ \t]*\K(?:(?!--|/\*)[^\n])*\bapps\.fnd_lookup_values\b
     paths:
