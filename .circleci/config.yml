@@ -21,7 +21,7 @@ workflows:
     jobs:
       - codacy/checkout_and_version:
           name: codacy/checkout_and_version
-          release_branch: ls/test
+          release_branch: main
       - unit_tests:
           requires:
             - codacy/checkout_and_version
