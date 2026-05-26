@@ -17,7 +17,6 @@ jobs:
           command: go test $(go list ./... | grep -v /docs/)
 
 workflows:
-
   compile_test_deploy:
     jobs:
       - codacy/checkout_and_version:
