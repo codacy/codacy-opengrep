@@ -323,12 +323,10 @@ rules:
       - generic
     patterns:
       - pattern-either:
-          # Scenario 1: lookup_type WITHOUT an active language clause
           - pattern-regex: >-
-              (?is)(?:^|;)(?!(?:[^;]*?\n)*?[ \t]*(?:(?!--|/\*)[^\n;])*?\blanguage\b)[^;]*?\blookup_type\b
-          # Scenario 2: ANY use of apps.fnd_lookup_values
+              (?is)(?:^|(?<=;))(?!(?:[^;]*?\n)*?[ \t]*(?:(?!--|/\*)[^\n;])*?\blanguage\b)[^;]*?\K\blookup_type\b
           - pattern-regex: >-
-              (?im)^(?:(?!--|/\*)[^\n])*\bapps\.fnd_lookup_values\b
+              (?im)^[ \t]*\K(?:(?!--|/\*)[^\n])*\bapps\.fnd_lookup_values\b
     paths:
       include:
         - "*.sql"
