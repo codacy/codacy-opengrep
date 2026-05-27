@@ -626,27 +626,3 @@ rules:
       confidence: HIGH
       references:
         - https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/
-  - id: codacy.c.security.avoid-std-system
-    languages:
-      - cpp
-      - c
-    severity: WARNING
-    message: >
-      Detected a call to the standard `system()` function. This is dangerous 
-      as it can lead to Command Injection if untrusted input is passed. 
-      Ensure you are using safe alternatives or properly validating/sanitizing any input used in system calls.
-    patterns:
-      # Catch standard system calls, whether global or explicitly in std::
-      - pattern-either:
-          - pattern: system(...)
-          - pattern: std::system(...)
-          - pattern: ::system(...)
-      # Explicitly ignore calls to your custom namespace
-      - pattern-not: osutility::system(...)
-    metadata:
-      category: security
-      description: >
-        Detects calls to the standard `system()` function which can lead to Command Injection vulnerabilities.
-        Ensure safe alternatives or proper input validation/sanitization is used.
-      impact: MEDIUM
-      confidence: LOW
