@@ -83,7 +83,7 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		//"-l", language,
 		"--timeout", "10",
 		"--timeout-threshold", "5",
-		"--max-target-bytes", "0",
+		"--max-target-bytes", "150000",
 		"--taint-intrafile",
 		//"--error-recovery",
 		"--max-memory", "5000",
