@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	codacy "github.com/codacy/codacy-engine-golang-seed/v6"
@@ -56,30 +57,32 @@ func TestCreateCommandParameters(t *testing.T) {
 	assert.Subset(t, cmdParams, expectedParams)
 }
 
-func TestRunCommand(t *testing.T) {
+func TestRunAndParseCommand(t *testing.T) {
 	// Arrange
-	mockCmd := exec.Command("echo", "Testing runCommand()")
+	mockCmd := exec.Command("echo", "{\"results\":[],\"errors\":[]}")
+	patternDescriptions := []codacy.PatternDescription{}
 
 	// Act
-	stdout, stderr, err := runCommand(mockCmd)
+	results, stderr, err := runAndParseCommand(mockCmd, &patternDescriptions)
 
 	// Assert
 	assert.NoError(t, err)
-	assert.Nil(t, stderr)
-	assert.Equal(t, "Testing runCommand()\n", *stdout)
+	assert.Empty(t, stderr)
+	assert.Empty(t, results)
 }
 
-func TestRunCommand_Error(t *testing.T) {
+func TestRunAndParseCommand_Error(t *testing.T) {
 	// Arrange
 	mockCmd := exec.Command("invalid_command_name")
+	patternDescriptions := []codacy.PatternDescription{}
 
 	// Act
-	stdout, stderr, err := runCommand(mockCmd)
+	results, stderr, err := runAndParseCommand(mockCmd, &patternDescriptions)
 
 	// Assert
 	assert.Error(t, err, "Expected an error running an invalid command")
-	assert.Empty(t, stdout, "Expected empty stdout for a failed command")
-	assert.Empty(t, stderr, "Expected empty stderr for a failed command")
+	assert.Empty(t, results, "Expected empty results for a failed command")
+	assert.Empty(t, stderr, "Expected empty stderr for a failed command start failure")
 }
 
 func TestParseCommandOutput(t *testing.T) {
@@ -93,7 +96,7 @@ func TestParseCommandOutput(t *testing.T) {
 	commandOutput := "{\"version\": \"1.49.0\", \"results\": [{\"check_id\": \"bash.curl.security.curl-eval.curl-eval\", \"path\": \"src/bash/curl-eval.bash\", \"start\": {\"line\": 5}, \"end\": {\"line\": 5}, \"extra\": {\"message\": \"Sample message\"}}], \"errors\": []}"
 
 	// Act
-	result, err := parseCommandOutput(&mockPatternDescriptions, commandOutput)
+	result, err := parseCommandOutput(&mockPatternDescriptions, strings.NewReader(commandOutput))
 
 	// Assert
 	assert.NoError(t, err, "Expected no error during parsing command output")
@@ -162,7 +165,7 @@ func TestAppendToResultWithIgnore(t *testing.T) {
 	}`
 
 	// Act
-	result, _ := parseCommandOutput(&mockPatternDescriptions, validSemgrepOutput)
+	result, _ := parseCommandOutput(&mockPatternDescriptions, strings.NewReader(validSemgrepOutput))
 
 	// Assert
 	assert.Len(t, result, 2, "Expected length of the result slice to be 2")
@@ -337,4 +340,27 @@ func TestWriteMessageWithInvalidPatternID(t *testing.T) {
 
 	// Assert
 	assert.Equal(t, docgen.GetFirstSentence(nonEmptyMessage), description, "Expected first sentence of non-empty message for invalid pattern ID")
+}
+
+func TestLimitedBufferKeepsOnlyTail(t *testing.T) {
+	// Arrange
+	buffer := &limitedBuffer{max: 5}
+
+	// Act
+	_, _ = buffer.Write([]byte("123"))
+	_, _ = buffer.Write([]byte("4567"))
+
+	// Assert
+	assert.Equal(t, "34567", buffer.String())
+}
+
+func TestLimitedBufferLargeWriteTruncatesToMax(t *testing.T) {
+	// Arrange
+	buffer := &limitedBuffer{max: 4}
+
+	// Act
+	_, _ = buffer.Write([]byte("abcdef"))
+
+	// Assert
+	assert.Equal(t, "cdef", buffer.String())
 }

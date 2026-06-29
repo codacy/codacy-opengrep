@@ -50,14 +50,9 @@ type SemgrepErrorLocation struct {
 func executeCommandForFiles(configurationFile *os.File, toolExecution codacy.ToolExecution, patternDescriptions *[]codacy.PatternDescription, language string, files []string) ([]codacy.Result, error) {
 	semgrepCmd := createCommand(configurationFile, toolExecution.SourceDir, language, files)
 
-	semgrepOutput, semgrepError, err := runCommand(semgrepCmd)
+	output, semgrepError, err := runAndParseCommand(semgrepCmd, patternDescriptions)
 	if err != nil {
-		return nil, errors.New("Error running semgrep: " + *semgrepError + "\n" + err.Error())
-	}
-
-	output, err := parseCommandOutput(patternDescriptions, *semgrepOutput)
-	if err != nil {
-		return nil, err
+		return nil, errors.New("Error running semgrep: " + semgrepError + "\n" + err.Error())
 	}
 	return output, nil
 }
@@ -104,32 +99,58 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 	return cmdParams
 }
 
-func runCommand(cmd *exec.Cmd) (*string, *string, error) {
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	cmdOutput, err := cmd.Output()
+func runAndParseCommand(cmd *exec.Cmd, patternDescriptions *[]codacy.PatternDescription) ([]codacy.Result, string, error) {
+	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {
-		stderrString := stderr.String()
-		return nil, &stderrString, err
+		return nil, "", err
 	}
-	cmdOutputString := string(cmdOutput)
-	return &cmdOutputString, nil, nil
+
+	stderrPipe, err := cmd.StderrPipe()
+	if err != nil {
+		return nil, "", err
+	}
+
+	stderrTail := &limitedBuffer{max: maxStderrBytes}
+	stderrDone := make(chan error, 1)
+	go func() {
+		_, copyErr := io.Copy(stderrTail, stderrPipe)
+		stderrDone <- copyErr
+	}()
+
+	if err := cmd.Start(); err != nil {
+		return nil, "", err
+	}
+
+	results, parseErr := parseCommandOutput(patternDescriptions, stdoutPipe)
+	if parseErr != nil && cmd.Process != nil {
+		_ = cmd.Process.Kill()
+	}
+
+	waitErr := cmd.Wait()
+	stderrCopyErr := <-stderrDone
+	if stderrCopyErr != nil && !isBenignStreamClose(stderrCopyErr) {
+		return nil, stderrTail.String(), stderrCopyErr
+	}
+	if parseErr != nil {
+		return nil, stderrTail.String(), parseErr
+	}
+	if waitErr != nil {
+		return nil, stderrTail.String(), waitErr
+	}
+
+	return results, "", nil
 }
 
-func parseCommandOutput(patternDescriptions *[]codacy.PatternDescription, commandOutput string) ([]codacy.Result, error) {
+func parseCommandOutput(patternDescriptions *[]codacy.PatternDescription, stream io.Reader) ([]codacy.Result, error) {
 	var result []codacy.Result
 
-	// Convert the JSON string to a []byte slice
-	jsonData := []byte(commandOutput)
-	// Create a bytes.Reader from the []byte slice
-	reader := bytes.NewReader(jsonData)
 	// Create a JSON decoder
-	decoder := json.NewDecoder(reader)
+	decoder := json.NewDecoder(stream)
 	// Read and process the JSON stream
 	for {
 		var semgrepOutput SemgrepOutput // or a struct that matches your JSON structure
 		if err := decoder.Decode(&semgrepOutput); err != nil {
-			if err == io.EOF {
+			if isBenignStreamClose(err) {
 				break // End of input
 			}
 			return nil, err
@@ -141,6 +162,40 @@ func parseCommandOutput(patternDescriptions *[]codacy.PatternDescription, comman
 	}
 
 	return result, nil
+}
+
+const maxStderrBytes = 64 * 1024
+
+type limitedBuffer struct {
+	buf bytes.Buffer
+	max int
+}
+
+func (l *limitedBuffer) Write(p []byte) (int, error) {
+	if l.max <= 0 {
+		return len(p), nil
+	}
+	if len(p) >= l.max {
+		l.buf.Reset()
+		_, _ = l.buf.Write(p[len(p)-l.max:])
+		return len(p), nil
+	}
+	if l.buf.Len()+len(p) > l.max {
+		drop := l.buf.Len() + len(p) - l.max
+		current := l.buf.Bytes()
+		l.buf.Reset()
+		_, _ = l.buf.Write(current[drop:])
+	}
+	_, _ = l.buf.Write(p)
+	return len(p), nil
+}
+
+func (l *limitedBuffer) String() string {
+	return l.buf.String()
+}
+
+func isBenignStreamClose(err error) bool {
+	return errors.Is(err, io.EOF) || errors.Is(err, os.ErrClosed) || strings.Contains(err.Error(), "file already closed")
 }
 
 func appendIssueToResult(result []codacy.Result, patternDescriptions *[]codacy.PatternDescription, semgrepOutput SemgrepOutput) []codacy.Result {
