@@ -632,5 +632,6 @@ func toCodacyLanguages(r SemgrepRule) []string {
 }
 
 func isEnabledByDefault(r SemgrepRule) bool {
-	return lo.Contains([]string{"high", "medium"}, strings.ToLower(r.Metadata.Confidence))
+	return lo.Contains([]string{"high", "medium"}, strings.ToLower(r.Metadata.Confidence)) &&
+	!strings.HasPrefix(r.ID, "codacy.")
 }
