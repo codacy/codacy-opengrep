@@ -626,3 +626,207 @@ rules:
       confidence: HIGH
       references:
         - https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/
+  - id: codacy.javascript.security.idor-express-direct-lookup
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $APP.$METHOD('$ROUTE/:$ID', ($REQ, $RES) => {
+                ...
+                $DB.findById($REQ.params.$ID)
+                ...
+              })
+          - pattern: |
+              $ROUTER.$METHOD('$ROUTE/:$ID', ($REQ, $RES) => {
+                ...
+                $DB.findById($REQ.params.$ID)
+                ...
+              })
+          - pattern: |
+              $APP.$METHOD('$ROUTE/:$ID', ($REQ, $RES) => {
+                ...
+                $DB.$QUERY({...id: $REQ.params.$ID...})
+                ...
+              })
+          - pattern: |
+              $APP.$METHOD('$ROUTE/:$ID', ($REQ, $RES) => {
+                ...
+                $DB.$QUERY($REQ.params.$ID)
+                ...
+              })
+    message: >
+      Potential IDOR vulnerability detected: User-controlled ID from request parameters is used directly to fetch resources
+      without authorization checks. Always verify that the authenticated user owns or has permission to access the requested resource
+      before returning data.
+    metadata:
+      owasp:
+        - A1:2021 Broken Access Control
+      cwe:
+        - CWE-639
+      description: Direct use of request parameters in database queries without authorization checks
+      category: security
+      technology:
+        - javascript
+        - express
+        - nodejs
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.java.security.idor-spring-direct-repository
+    severity: ERROR
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: |
+              @$MAPPING("$PATH/{$ID}")
+              public $RETURN $METHOD(@PathVariable $TYPE $ID, ...) {
+                ...
+                $REPO.findById($ID)
+                ...
+              }
+          - pattern: |
+              @$MAPPING("$PATH/{$ID}")
+              public $RETURN $METHOD(@PathVariable $TYPE $ID, ...) {
+                ...
+                $REPO.$QUERY($ID)
+                ...
+              }
+          - pattern: |
+              @$MAPPING("$PATH/{$ID}")
+              public $RETURN $METHOD(@PathVariable $TYPE $ID, ...) {
+                ...
+                $QUERY.setParameter("$PARAM", $ID)
+                ...
+              }
+      - metavariable-regex:
+          metavariable: "$MAPPING"
+          regex: "(GetMapping|PostMapping|PutMapping|DeleteMapping|RequestMapping)"
+    message: >
+      Potential IDOR vulnerability detected: @PathVariable is used directly in repository queries without authorization checks.
+      Ensure the authenticated user owns or has permission to access the resource before performing operations.
+    metadata:
+      owasp:
+        - A1:2021 Broken Access Control
+      cwe:
+        - CWE-639
+      description: Direct use of @PathVariable in repository queries without authorization checks
+      category: security
+      technology:
+        - java
+        - spring
+        - jpa
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.python.security.idor-flask-direct-query
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: |
+              @$APP.route('$ROUTE/<$ID>')
+              def $FUNC($ID):
+                ...
+                $DB.session.query(...).filter_by(id=$ID)...
+                ...
+          - pattern: |
+              @$APP.route('$ROUTE/<$ID>')
+              def $FUNC($ID):
+                ...
+                $MODEL.query.get($ID)
+                ...
+          - pattern: |
+              @$APP.route('$ROUTE/<$ID>')
+              def $FUNC($ID):
+                ...
+                $DB.get($ID)
+                ...
+    message: >
+      Potential IDOR vulnerability detected: Route parameter is used directly in database queries without authorization checks.
+      Always verify that the authenticated user owns or has permission to access the requested resource.
+    metadata:
+      owasp:
+        - A1:2021 Broken Access Control
+      cwe:
+        - CWE-639
+      description: Direct use of URL parameters in database queries without authorization checks
+      category: security
+      technology:
+        - python
+        - flask
+        - sqlalchemy
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.php.security.idor-direct-query
+    severity: ERROR
+    languages:
+      - php
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $DB->query("... WHERE id = " . $_GET['$ID'] ...)
+          - pattern: |
+              $DB->query("... WHERE id = " . $_POST['$ID'] ...)
+          - pattern: |
+              $DB->prepare("... WHERE id = ?")->execute([$_GET['$ID']])
+          - pattern: |
+              $DB->prepare("... WHERE id = ?")->execute([$_POST['$ID']])
+          - pattern: |
+              select($WHERE = $_GET['$ID'])
+          - pattern: |
+              select($WHERE = $_POST['$ID'])
+    message: >
+      Potential IDOR vulnerability detected: User input from $_GET or $_POST is used directly in database queries.
+      Verify that the authenticated user owns or has permission to access the resource before executing the query.
+    metadata:
+      owasp:
+        - A1:2021 Broken Access Control
+      cwe:
+        - CWE-639
+      description: Direct use of $_GET/$_POST in database queries without authorization checks
+      category: security
+      technology:
+        - php
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.generic.security.idor-missing-auth-check
+    severity: WARNING
+    languages:
+      - javascript
+      - typescript
+      - java
+      - python
+      - php
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $USER_ID = $REQUEST.$PARAM
+              ...
+              return $DB.$QUERY($USER_ID)
+          - pattern: |
+              $ID = $REQUEST.$PARAM
+              ...
+              return $RESOURCE.$QUERY($ID)
+          - pattern: |
+              function $FUNC($ID) {
+                ...
+                return $DB.get($ID)
+              }
+    message: >
+      Potential IDOR vulnerability: User-supplied parameter used directly to access resources.
+      Ensure proper authorization checks are performed to validate the user has access to the requested resource.
+    metadata:
+      owasp:
+        - A1:2021 Broken Access Control
+      cwe:
+        - CWE-639
+      description: Generic pattern detecting direct resource access without authorization
+      category: security
+      technology:
+        - web
+      impact: HIGH
+      confidence: LOW
