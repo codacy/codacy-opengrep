@@ -85,6 +85,29 @@ rules:
         - javascript
       impact: HIGH
       confidence: MEDIUM
+  - id: codacy.kotlin.security.hard-coded-password
+    severity: ERROR
+    languages:
+      - kotlin
+    patterns:
+        - pattern-either:
+          - pattern: 'val $PASSWORD = "$VALUE"'
+          - pattern: 'var $PASSWORD = "$VALUE"'
+          - pattern: 'val $PASSWORD: String = "$VALUE"'
+          - pattern: 'var $PASSWORD: String = "$VALUE"'
+        - metavariable-regex:
+            metavariable: "$PASSWORD"
+            regex: "(?i).*(password|motdepasse|heslo|adgangskode|wachtwoord|salasana|passwort|passord|senha|geslo|clave|losenord|clave|parola|secret|pwd|(api|secret|private|access|aws|ssh|auth|session|encryption|decryption|gcp)[_-]?key).*"
+    message: Hardcoded passwords are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Hardcoded passwords are a security risk.
+      category: security
+      technology:
+        - kotlin
+      impact: HIGH
+      confidence: MEDIUM
   - id: codacy.generic.plsql.empty-strings
     severity: WARNING
     languages:
