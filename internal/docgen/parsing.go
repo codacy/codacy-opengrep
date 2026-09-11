@@ -494,51 +494,53 @@ func getCodacySubCategory(category Category, OWASPCategories []string) SubCatego
 	if category == Security && len(OWASPCategories) > 0 {
 		standardizeCategory := standardizeCategory(OWASPCategories[0])
 		switch standardizeCategory {
-		case "a1:2017-injection":
-			return InputValidation
-		case "a1:2021-broken-access-control":
-			return InsecureStorage
-		case "a2:2017-broken-authentication":
-			return Auth
-		case "a2:2021-cryptographic-failures":
-			return Cryptography
-		case "a3:2017-sensitive-data-exposure":
-			return Visibility
-		case "a3:2021-injection":
-			return InputValidation
-		case "a4:2017-xml-external-entities-(xxe)":
-			return InputValidation
-		case "a4:2021-insecure-design":
-			return Other
-		case "a5:2017-broken-access-control":
-			return InsecureStorage
-		case "a5:2017-sensitive-data-exposure":
-			return InsecureStorage
-		case "a5:2021-security-misconfiguration":
-			return Other
-		case "a6:2017-misconfiguration",
-			"a6:2017-security-misconfiguration":
-			return Other
-		case "a6:2021-vulnerable-and-outdated-components":
-			return InsecureModulesLibraries
-		case "a7:2017-cross-site-scripting-(xss)":
-			return InputValidation
-		case "a7:2021-identification-and-authentication-failures":
-			return Auth
-		case "a8:2017-insecure-deserialization":
-			return InputValidation
-		case "a8:2021-software-and-data-integrity-failures":
-			return UnexpectedBehaviour
-		case "a9:2017-using-components-with-known-vulnerabilities":
-			return InsecureModulesLibraries
-		case "a9:2021-security-logging-and-monitoring-failures":
-			return Visibility
-		case "a10:2017-insufficient-logging-&-monitoring":
-			return Visibility
-		case "a10:2021-server-side-request-forgery-(ssrf)":
-			return InputValidation
-		default:
-			panic(fmt.Sprintf("unknown subcategory: %s -> %s", standardizeCategory, OWASPCategories[0]))
+			case "a1:2017-injection":
+				return InputValidation
+			case "a1:2021-broken-access-control":
+				return InsecureStorage
+			case "a2:2017-broken-authentication":
+				return Auth
+			case "a2:2021-cryptographic-failures":
+				return Cryptography
+			case "a3:2017-sensitive-data-exposure":
+				return Visibility
+			case "a3:2021-injection":
+				return InputValidation
+			case "a4:2017-xml-external-entities-(xxe)":
+				return InputValidation
+			case "a4:2021-insecure-design":
+				return Other
+			case "a5:2017-broken-access-control":
+				return InsecureStorage
+			case "a5:2017-sensitive-data-exposure":
+				return InsecureStorage
+			case "a5:2021-security-misconfiguration":
+				return Other
+			case "a6:2017-misconfiguration",
+				"a6:2017-security-misconfiguration":
+				return Other
+			case "a6:2021-vulnerable-and-outdated-components":
+				return InsecureModulesLibraries
+			case "a7:2017-cross-site-scripting-(xss)":
+				return InputValidation
+			case "a7:2021-identification-and-authentication-failures":
+				return Auth
+			case "a8:2017-insecure-deserialization":
+				return InputValidation
+			case "a8:2021-software-and-data-integrity-failures":
+				return UnexpectedBehaviour
+			case "a9:2017-using-components-with-known-vulnerabilities":
+				return InsecureModulesLibraries
+			case "a9:2021-security-logging-and-monitoring-failures":
+				return Visibility
+			case "a10:2017-insufficient-logging-&-monitoring":
+				return Visibility
+			case "a10:2021-server-side-request-forgery-(ssrf)":
+				return InputValidation
+			case "a10:2021-server-side-request-forgery":
+				return InputValidation
+			default:
+				panic(fmt.Sprintf("unknown subcategory: %s -> %s", standardizeCategory, OWASPCategories[0]))
 		}
 	}
 	return ""
