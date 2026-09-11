@@ -629,14 +629,16 @@ rules:
   - id: codacy.yaml.security.hard-coded-tokens
     severity: ERROR
     languages:
-      - yaml
+      - generic
     patterns:
-      - pattern-regex: '(?i)^\s*[\w-]*[_-]token[_-]?[\w-]*\s*:\s*"[^"]+"\s*$'
+      - pattern-regex: '(?i)^\s*[\w-]*[_-]token[_-]?[\w-]*\s*:\s*["'']?[^\s"'']+["'']?\s*$'
     message: Hardcoded tokens are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
     metadata:
       owasp:
         - A3:2017 Sensitive Data Exposure
       description: Hardcoded tokens are a security risk.
       category: security
+      technology:
+        - yaml
       impact: HIGH
       confidence: MEDIUM
