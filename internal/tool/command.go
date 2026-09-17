@@ -47,19 +47,43 @@ type SemgrepErrorLocation struct {
 	Path string `json:"path"`
 }
 
+// maxFilesPerBatch caps how many files get passed as CLI args per opengrep
+// invocation, to avoid hitting the OS argument list size limit (ARG_MAX)
+// on repos with a very large number of files.
+const maxFilesPerBatch = 200
+
 func executeCommandForFiles(configurationFile *os.File, toolExecution codacy.ToolExecution, patternDescriptions *[]codacy.PatternDescription, language string, files []string) ([]codacy.Result, error) {
-	semgrepCmd := createCommand(configurationFile, toolExecution.SourceDir, language, files)
+	var results []codacy.Result
 
-	semgrepOutput, semgrepError, err := runCommand(semgrepCmd)
-	if err != nil {
-		return nil, errors.New("Error running semgrep: " + *semgrepError + "\n" + err.Error())
+	for _, batch := range chunkFiles(files, maxFilesPerBatch) {
+		semgrepCmd := createCommand(configurationFile, toolExecution.SourceDir, language, batch)
+
+		semgrepOutput, semgrepError, err := runCommand(semgrepCmd)
+		if err != nil {
+			return nil, errors.New("Error running semgrep: " + *semgrepError + "\n" + err.Error())
+		}
+
+		output, err := parseCommandOutput(patternDescriptions, *semgrepOutput)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, output...)
 	}
 
-	output, err := parseCommandOutput(patternDescriptions, *semgrepOutput)
-	if err != nil {
-		return nil, err
+	return results, nil
+}
+
+func chunkFiles(files []string, size int) [][]string {
+	if len(files) == 0 {
+		return nil
 	}
-	return output, nil
+
+	var chunks [][]string
+	for start := 0; start < len(files); start += size {
+		end := min(start+size, len(files))
+		chunks = append(chunks, files[start:end])
+	}
+	return chunks
 }
 
 func createCommand(configurationFile *os.File, sourceDir, language string, files []string) *exec.Cmd {
