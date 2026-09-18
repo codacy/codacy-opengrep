@@ -180,6 +180,11 @@ func getMessage(patternDescriptions *[]codacy.PatternDescription, id string, ext
 
 func appendErrorToResult(result []codacy.Result, semgrepOutput SemgrepOutput) []codacy.Result {
 	for _, semgrepError := range semgrepOutput.Errors {
+		// Skip errors with empty paths (e.g., from symlinks that couldn't be analyzed)
+		if semgrepError.Location.Path == "" {
+			continue
+		}
+
 		// Determine the size of the error message we're logging
 		sizeMessage := 250
 
