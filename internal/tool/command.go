@@ -50,7 +50,7 @@ type SemgrepErrorLocation struct {
 // maxFilesPerBatch caps how many files get passed as CLI args per opengrep
 // invocation, to avoid hitting the OS argument list size limit (ARG_MAX)
 // on repos with a very large number of files.
-const maxFilesPerBatch = 200
+const maxFilesPerBatch = 1000
 
 func executeCommandForFiles(configurationFile *os.File, toolExecution codacy.ToolExecution, patternDescriptions *[]codacy.PatternDescription, language string, files []string) ([]codacy.Result, error) {
 	var results []codacy.Result
