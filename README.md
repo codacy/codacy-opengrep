@@ -23,7 +23,7 @@ docker run -it -v $srcDir:/src codacy-opengrep:latest
 
 1. Update the version in `.tool_version`
 
-2. Get the latest commit for the `release` branch from the github.com/opengrep/opengrep-rules repo and update it in DocGenerator file `internal/docgen/parsing.go`.
+2. github.com/opengrep/opengrep-rules is **archived** (no `release` branch anymore; frozen at its last `main` commit). The pin in `internal/docgen/parsing.go` should already be that final commit — only revisit this step if Codacy switches to a different upstream rule source.
 
 3.  Run the DocGenerator:
 ```bash
@@ -49,7 +49,7 @@ The `docs/` directory holds both hand-maintained inputs and generated outputs:
 - `docs/tool-description.md` — short blurb about the tool, hand-maintained.
 - `docs/patterns.json`, `docs/description/*.json`, `docs/description/*.md`, `docs/rules.yaml`, `docs/semgrep-pro-rules.yaml` — **generated, git-ignored** (see `.gitignore`: "Ignore generated documentation files to avoid licensing issues"). Do not hand-edit and do not expect to see them in `git status`/PR diffs — they're produced fresh on every `go run ./cmd/docgen` and inside the `Dockerfile` build itself.
 
-These generated files come from **`internal/docgen`** (entry point `cmd/docgen/main.go`), which downloads three rule sources — the `opengrep/opengrep-rules` GitHub repo (pinned to a specific commit), GitLab's `sast-rules` repo (tracks its default branch, no commit pin), and Codacy's own `docs/codacy-rules*.yaml` files — parses the Semgrep-format YAML rules, and converts them into Codacy's pattern/description format. This means the generator needs **network access** and **git** installed locally (it clones the rule repos).
+These generated files come from **`internal/docgen`** (entry point `cmd/docgen/main.go`), which downloads three rule sources — the `opengrep/opengrep-rules` GitHub repo (pinned to a specific commit; **this repo is now archived**, so the pin is effectively frozen and won't need bumping unless Codacy moves to a different rule source), GitLab's `sast-rules` repo (tracks its default branch, no commit pin), and Codacy's own `docs/codacy-rules*.yaml` files — parses the Semgrep-format YAML rules, and converts them into Codacy's pattern/description format. This means the generator needs **network access** and **git** installed locally (it clones the rule repos).
 
 ### 2. Files that encode versions — check all of these on every update
 
@@ -57,14 +57,14 @@ These generated files come from **`internal/docgen`** (entry point `cmd/docgen/m
 |---|---|---|
 | `.tool_version` | The Opengrep release version reported/used by the wrapper, and consumed by `internal/docgen` when generating `patterns.json` | Bump to the target version (e.g. `1.24.0`, no leading `v`). |
 | `Dockerfile` → `ARG OPENGREP_VERSION` | Which Opengrep GitHub release binary is downloaded at image build time | Must be bumped **in lock-step** with `.tool_version`, with a leading `v` (e.g. `v1.24.0`). Past PRs have shipped inconsistent bumps here — a prior fix commit exists specifically because this ARG was left stale while `.tool_version` was updated, so double-check both are aligned. |
-| `internal/docgen/parsing.go` → `getSemgrepRegistryRules()` commit hash | Which commit of `github.com/opengrep/opengrep-rules` (`release` branch) is used as the rule source | Get the latest commit for the `release` branch of that repo and update the hardcoded commit string. |
+| `internal/docgen/parsing.go` → `getSemgrepRegistryRules()` commit hash | Which commit of `github.com/opengrep/opengrep-rules` is used as the rule source | Repo is **archived** (no `release` branch anymore). Pin is frozen at the repo's last `main` commit — no update needed unless the rule source changes. |
 | `.circleci/config.yml` → `codacy/base` orb, `codacy/plugins-test` orb | Shared CircleCI steps and plugin-test runner | Check for newer published orb versions if the task scope includes CI tooling bumps. |
 | `go.mod` / `go.sum` | Go module dependencies (e.g. `codacy-engine-golang-seed`) | Only bump if the task scope includes dependency updates; run `go mod tidy` after. |
 
 ### 3. Step-by-step update procedure
 
 1. **Bump `.tool_version` and the Dockerfile's `OPENGREP_VERSION` ARG together** to the same target version.
-2. **Update the opengrep-rules commit pin** in `internal/docgen/parsing.go` if the task calls for picking up new/changed upstream rules (find the latest commit on the `release` branch of `opengrep/opengrep-rules`).
+2. **opengrep-rules commit pin**: `opengrep/opengrep-rules` is archived and has no `release` branch anymore, so the pin in `internal/docgen/parsing.go` is frozen at its last `main` commit — nothing to update here unless the task moves the rule source elsewhere.
 3. **Regenerate the docs**: `go run ./cmd/docgen`. This produces `docs/patterns.json`, `docs/rules.yaml`, and `docs/description/*` fresh — since these are git-ignored, you won't see them in the diff, but the run itself is the validation that the rule set still parses cleanly (it `panic`s on unrecognized severities/categories/languages, so a clean exit is a meaningful signal).
 4. **Run the Go unit tests**: `go test $(go list ./... | grep -v /docs/)` (this is the exact command CI's `unit_tests` job runs).
 5. **Build the Docker image**: `docker build --build-arg TOOL_VERSION=$(cat .tool_version) -t codacy-opengrep:latest .` — this exercises the full chain: Go build, `go run ./cmd/docgen` inside the builder stage, and the architecture-specific Opengrep binary download, so a failure here can also reveal a bad version/commit pin.
