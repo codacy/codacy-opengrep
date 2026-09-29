@@ -51,15 +51,31 @@ func executeCommandForFiles(configurationFile *os.File, toolExecution codacy.Too
 	semgrepCmd := createCommand(configurationFile, toolExecution.SourceDir, language, files)
 
 	semgrepOutput, semgrepError, err := runCommand(semgrepCmd)
-	if err != nil {
-		return nil, errors.New("Error running semgrep: " + *semgrepError + "\n" + err.Error())
+
+	// Try to parse output if we have any
+	if semgrepOutput != nil && *semgrepOutput != "" {
+		output, parseErr := parseCommandOutput(patternDescriptions, *semgrepOutput)
+		if parseErr != nil {
+			// If parsing fails and we had a command error, report the command error
+			if err != nil {
+				return nil, errors.New("Error running Opengrep: " + *semgrepError + "\n" + err.Error())
+			}
+			return nil, parseErr
+		}
+		// Parsing succeeded, return results even if command had a non-zero exit
+		if err != nil {
+			fmt.Printf("Warning: Opengrep exited with error (some files may not have been analyzed): %v\n", err)
+		}
+		return output, nil
 	}
 
-	output, err := parseCommandOutput(patternDescriptions, *semgrepOutput)
+	// No output and command failed
 	if err != nil {
-		return nil, err
+		return nil, errors.New("Error running Opengrep: " + *semgrepError + "\n" + err.Error())
 	}
-	return output, nil
+
+	// No output but command succeeded - return empty results
+	return []codacy.Result{}, nil
 }
 
 func createCommand(configurationFile *os.File, sourceDir, language string, files []string) *exec.Cmd {
@@ -105,15 +121,18 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 }
 
 func runCommand(cmd *exec.Cmd) (*string, *string, error) {
+	var stdout bytes.Buffer
 	var stderr bytes.Buffer
+	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
-	cmdOutput, err := cmd.Output()
-	if err != nil {
-		stderrString := stderr.String()
-		return nil, &stderrString, err
-	}
-	cmdOutputString := string(cmdOutput)
-	return &cmdOutputString, nil, nil
+
+	err := cmd.Run()
+
+	stdoutString := stdout.String()
+	stderrString := stderr.String()
+
+	// Return output regardless of error - the caller can decide what to do
+	return &stdoutString, &stderrString, err
 }
 
 func parseCommandOutput(patternDescriptions *[]codacy.PatternDescription, commandOutput string) ([]codacy.Result, error) {
