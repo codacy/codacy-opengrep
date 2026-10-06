@@ -47,7 +47,7 @@ func prepareToRun(toolExecution codacy.ToolExecution) (*os.File, *[]codacy.Patte
 		return nil, nil, err
 	}
 
-	err = populateFilesByLanguage(toolExecution.Files, toolExecution.SourceDir)
+	err = populateFilesToAnalyse(toolExecution.Files, toolExecution.SourceDir)
 	if err != nil {
 		return nil, nil, errors.New("Error getting files to analyse: " + err.Error())
 	}
@@ -77,14 +77,5 @@ func loadPatternDescriptions() (*[]codacy.PatternDescription, error) {
 }
 
 func run(configurationFile *os.File, toolExecution codacy.ToolExecution, patternDescriptions *[]codacy.PatternDescription) ([]codacy.Result, error) {
-	var results []codacy.Result
-	for language, files := range filesByLanguage {
-		result, err := executeCommandForFiles(configurationFile, toolExecution, patternDescriptions, language, files)
-		if err != nil {
-			return nil, err
-		}
-		results = append(results, result...)
-	}
-
-	return results, nil
+	return executeCommandForFiles(configurationFile, toolExecution, patternDescriptions, filesToAnalyse)
 }

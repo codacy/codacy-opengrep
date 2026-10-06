@@ -52,11 +52,11 @@ type SemgrepErrorLocation struct {
 // on repos with a very large number of files.
 const maxFilesPerBatch = 1000
 
-func executeCommandForFiles(configurationFile *os.File, toolExecution codacy.ToolExecution, patternDescriptions *[]codacy.PatternDescription, language string, files []string) ([]codacy.Result, error) {
+func executeCommandForFiles(configurationFile *os.File, toolExecution codacy.ToolExecution, patternDescriptions *[]codacy.PatternDescription, files []string) ([]codacy.Result, error) {
 	var results []codacy.Result
 
 	for _, batch := range chunkFiles(files, maxFilesPerBatch) {
-		semgrepCmd := createCommand(configurationFile, toolExecution.SourceDir, language, batch)
+		semgrepCmd := createCommand(configurationFile, toolExecution.SourceDir, batch)
 
 		semgrepOutput, semgrepError, err := runCommand(semgrepCmd)
 		if err != nil {
@@ -86,15 +86,15 @@ func chunkFiles(files []string, size int) [][]string {
 	return chunks
 }
 
-func createCommand(configurationFile *os.File, sourceDir, language string, files []string) *exec.Cmd {
-	params := createCommandParameters(language, configurationFile, files)
+func createCommand(configurationFile *os.File, sourceDir string, files []string) *exec.Cmd {
+	params := createCommandParameters(configurationFile, files)
 	cmd := exec.Command("/usr/local/bin/opengrep", params...)
 	cmd.Dir = sourceDir
 
 	return cmd
 }
 
-func createCommandParameters(language string, configurationFile *os.File, filesToAnalyse []string) []string {
+func createCommandParameters(configurationFile *os.File, filesToAnalyse []string) []string {
 
 	// Reset file pointer to the beginning for later use
 	if _, err := configurationFile.Seek(0, io.SeekStart); err != nil {
@@ -104,7 +104,6 @@ func createCommandParameters(language string, configurationFile *os.File, filesT
 		"scan",
 		"--json", //"-json_nodots",
 		"--config", configurationFile.Name(),
-		//"-l", language,
 		"--timeout", "10",
 		"--timeout-threshold", "5",
 		"--max-target-bytes", "150000",
