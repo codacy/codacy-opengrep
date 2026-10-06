@@ -398,79 +398,16 @@ func TestWalkDirFuncWithError(t *testing.T) {
 	assert.Error(t, err)
 }
 
-func TestAddFileToFilesByLanguageWithGoFile(t *testing.T) {
+func TestAddFileToAnalyseKeepsFilesOfAllLanguages(t *testing.T) {
 	// Arrange
-	fileName := "file.go"
+	filesToAnalyse = nil
+	fileNames := []string{"file.go", "script.py", "document.docx"}
 
 	// Act
-	addFileToFilesByLanguage(fileName)
+	for _, fileName := range fileNames {
+		addFileToAnalyse(fileName)
+	}
 
 	// Assert
-	assert.Contains(t, filesByLanguage["go"], fileName, "Expected file to be added to Go files")
-}
-
-func TestAddFileToFilesByLanguageWithPythonFile(t *testing.T) {
-	// Arrange
-	fileName := "script.py"
-
-	// Act
-	addFileToFilesByLanguage(fileName)
-
-	// Assert
-	assert.Contains(t, filesByLanguage["python"], fileName, "Expected file to be added to Python files")
-}
-
-func TestAddFileToFilesByLanguageWithUnknownFile(t *testing.T) {
-	// Arrange
-	fileName := "document.docx"
-
-	// Act
-	addFileToFilesByLanguage(fileName)
-
-	// Assert
-	assert.Contains(t, filesByLanguage, "none", "Expected file to be added to unknown language")
-}
-
-func TestDetectLanguageWithGoExtension(t *testing.T) {
-	// Arrange
-	fileName := "file.go"
-
-	// Act
-	language := detectLanguage(fileName)
-
-	// Assert
-	assert.Equal(t, "go", language, "Expected language to be Go")
-}
-
-func TestDetectLanguageWithPythonExtension(t *testing.T) {
-	// Arrange
-	fileName := "script.py"
-
-	// Act
-	language := detectLanguage(fileName)
-
-	// Assert
-	assert.Equal(t, "python", language, "Expected language to be Python")
-}
-
-func TestDetectLanguageWithUnknownExtension(t *testing.T) {
-	// Arrange
-	fileName := "document.docx"
-
-	// Act
-	language := detectLanguage(fileName)
-
-	// Assert
-	assert.Equal(t, "none", language, "Expected language to be none for .docx file")
-}
-
-func TestDetectLanguageWithoutExtension(t *testing.T) {
-	// Arrange
-	fileName := "file"
-
-	// Act
-	language := detectLanguage(fileName)
-
-	// Assert
-	assert.Equal(t, "none", language, "Expected language to be none for unknown file type")
+	assert.Equal(t, fileNames, filesToAnalyse, "Expected all files to be analysed together")
 }
