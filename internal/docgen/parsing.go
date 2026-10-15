@@ -116,6 +116,8 @@ func getCodacyRules(docsDir string) (*ParsedSemgrepRules, error) {
 		"codacy-rules-i18n.yaml",
 		"codacy-rules-ai.yaml",
 		"codacy-rules-exotic.yaml",
+		"codacy-rules-csharp.yaml",
+		"codacy-rules-c-cpp.yaml",
 	}
 	for _, file := range customRulesFiles {
 		filePath, _ := filepath.Abs(path.Join(docsDir, file))
@@ -433,6 +435,12 @@ func toCodacyCategory(r SemgrepRule) Category {
 		return BestPractice
 	case "codestyle":
 		return CodeStyle
+	case "complexity":
+		return Complexity
+	case "unused-code":
+		return UnusedCode
+	case "comprehensibility":
+		return Comprehensibility
 	case "":
 		if len(r.Metadata.CWEs) > 0 {
 			return Security
