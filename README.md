@@ -45,7 +45,7 @@ This is a **Codacy engine**: a Go wrapper (`cmd/tool`, `internal/tool`, built on
 
 The `docs/` directory holds both hand-maintained inputs and generated outputs:
 
-- `docs/codacy-rules.yaml`, `docs/codacy-rules-i18n.yaml`, `docs/codacy-rules-ai.yaml`, `docs/codacy-rules-exotic.yaml` — Codacy's own custom Semgrep-style rules, hand-maintained, merged in alongside the upstream rule sets.
+- `docs/codacy-rules.yaml`, `docs/codacy-rules-i18n.yaml`, `docs/codacy-rules-ai.yaml`, `docs/codacy-rules-exotic.yaml`, `docs/codacy-rules-csharp.yaml` — Codacy's own custom Semgrep-style rules, hand-maintained, merged in alongside the upstream rule sets. `codacy-rules-csharp.yaml` holds the C# code quality and security rules (`codacy.csharp.<category>.<rule>`); each rule has a test file named after it in `docs/multiple-tests/codacy-rules-csharp/src/`, where `// Noncompliant` comments mark the expected findings (the file-level copyright rule is tested separately in `docs/multiple-tests/codacy-rules-csharp-header/`).
 - `docs/tool-description.md` — short blurb about the tool, hand-maintained.
 - `docs/patterns.json`, `docs/description/*.json`, `docs/description/*.md`, `docs/rules.yaml`, `docs/semgrep-pro-rules.yaml` — **generated, git-ignored** (see `.gitignore`: "Ignore generated documentation files to avoid licensing issues"). Do not hand-edit and do not expect to see them in `git status`/PR diffs — they're produced fresh on every `go run ./cmd/docgen` and inside the `Dockerfile` build itself.
 
