@@ -34,7 +34,7 @@
     <file name="codacy.csharp-lowercase.cs">
         <error source="codacy.generic.csharp-lowercase-variables" line="5" message="Variable names should be lowercase" severity="info" />
     </file>
-    <file name="codacy_apenai_non_guardrails.py">
+    <file name="codacy_openai_non_guardrails.py">
         <error source="codacy.python.openai.non-guardrails-direct-call" line="6" message="Direct OpenAI SDK call detected." severity="warning" />
         <error source="codacy.python.openai.non-guardrails-client-usage" line="3" message="OpenAI client used without Guardrails." severity="warning" />
         <error source="codacy.python.openai.non-guardrails-client-usage" line="3" message="OpenAI client used without Guardrails." severity="warning" />
@@ -68,6 +68,8 @@
         <error source="codacy.yaml.security.hard-coded-tokens" line="10" message="Hardcoded tokens are a security risk." severity="error" />
         <error source="codacy.yaml.security.hard-coded-tokens" line="11" message="Hardcoded tokens are a security risk." severity="error" />
         <error source="codacy.yaml.security.hard-coded-tokens" line="12" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="13" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="13" message="Hardcoded tokens are a security risk." severity="error" />
         <error source="codacy.yaml.security.hard-coded-tokens" line="13" message="Hardcoded tokens are a security risk." severity="error" />
     </file>
 </checkstyle>
