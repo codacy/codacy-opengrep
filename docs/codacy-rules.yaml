@@ -645,8 +645,15 @@ rules:
     severity: ERROR
     languages:
       - generic
-    patterns:
+    pattern-either:
+      # any key containing _token / -token with a single-word value
       - pattern-regex: '(?i)^\s*[\w-]*[_-]token[_-]?[\w-]*\s*:\s*["'']?[^\s"'']+["'']?\s*$'
+      # Same keys with a {{ ... }} template value containing spaces
+      - pattern-regex: '(?i)^\s*[\w-]*[_-]token[_-]?[\w-]*\s*:\s*["'']?\{\{[^}\n]*\}\}["'']?\s*$'
+      # Key named token / *_token / *-token with a literal value (skips booleans, numbers, null, templates, env refs, anchors, block scalars)
+      - pattern-regex: '(?i)^\s*(?:[\w-]*[_-])?token\s*:\s*(?!(?:true|false|yes|no|null|~|-?\d+(?:\.\d+)?)\s*(?:#.*)?$)(?!["'']?\s*(?:\{\{|\$\{|\$[A-Z_]|<%|%\{))(?:"[^"\n]{8,}"|''[^''\n]{8,}''|[^\s"''#|>&*!{\[][^\s#]{7,})\s*(?:#.*)?$'
+      # Well-known token formats under any key (GitHub, GitLab, Slack, npm)
+      - pattern-regex: '\b(?:gh[pousr]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{22,}|glpat-[A-Za-z0-9_-]{20,}|xox[abprs]-[A-Za-z0-9-]{10,}|npm_[A-Za-z0-9]{36})\b'
     message: Hardcoded tokens are a security risk. They can be easily found by attackers and used to gain unauthorized access to the system.
     metadata:
       owasp:
