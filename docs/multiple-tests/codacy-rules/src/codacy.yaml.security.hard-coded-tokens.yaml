@@ -1,0 +1,19 @@
+# Should be flagged
+gh_token: >-
+gh_token: "{{gh_token}}"
+gh_token: "{{ gh_token }}"
+gh_token: '{{ secrets.GH }}'
+gh_token: "correct horse battery staple"
+max_tokens: 4096
+access_token_ttl: 3600
+use_refresh_token: true
+auth-token: "s3cr3tValue99"
+Token: 'abcdef123456'
+token: ghp_EXAMPLEexampleEXAMPLEexample00001234
+slack_token: xoxb-1234567890-abcdef
+
+# Should not be flagged
+name: "{{ gh_token }}"
+token: true
+token: abc
+api_key: some-value

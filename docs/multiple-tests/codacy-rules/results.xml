@@ -34,7 +34,7 @@
     <file name="codacy.csharp-lowercase.cs">
         <error source="codacy.generic.csharp-lowercase-variables" line="5" message="Variable names should be lowercase" severity="info" />
     </file>
-    <file name="codacy_apenai_non_guardrails.py">
+    <file name="codacy_openai_non_guardrails.py">
         <error source="codacy.python.openai.non-guardrails-direct-call" line="6" message="Direct OpenAI SDK call detected." severity="warning" />
         <error source="codacy.python.openai.non-guardrails-client-usage" line="3" message="OpenAI client used without Guardrails." severity="warning" />
         <error source="codacy.python.openai.non-guardrails-client-usage" line="3" message="OpenAI client used without Guardrails." severity="warning" />
@@ -55,5 +55,22 @@
     </file>
     <file name="codacy-shell.sh"> 
         <error source="codacy.bash.security.hard-coded-password" line="1" message="Hardcoded passwords are a security risk." severity="error" />
+    </file>
+    <file name="codacy.yaml.security.hard-coded-tokens.yaml">
+        <error source="codacy.yaml.security.hard-coded-tokens" line="2" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="3" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="4" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="5" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="6" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="7" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="8" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="9" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="10" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="11" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="12" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="12" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="13" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="13" message="Hardcoded tokens are a security risk." severity="error" />
+        <error source="codacy.yaml.security.hard-coded-tokens" line="13" message="Hardcoded tokens are a security risk." severity="error" />
     </file>
 </checkstyle>
