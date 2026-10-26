@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="root">
+    <module name="codacy.c.security.allocation-missing-null-terminator" />
+    <module name="codacy.c.correctness.sizeof-pointer-as-buffer-size" />
+    <module name="codacy.c.correctness.realloc-result-overwrites-pointer" />
+    <module name="codacy.c.security.unchecked-allocation-result" />
+    <module name="codacy.c.security.return-address-of-local" />
+    <module name="codacy.cpp.security.mismatched-deallocation" />
+    <module name="codacy.c.correctness.assignment-in-condition" />
+    <module name="codacy.c.correctness.unsigned-compared-with-zero" />
+    <module name="codacy.c.correctness.memset-zero-length" />
+    <module name="codacy.c.correctness.comparison-result-against-specific-value" />
+    <module name="codacy.c.correctness.thread-unsafe-function" />
+    <module name="codacy.c.security.unsafe-call-in-signal-handler" />
+    <module name="codacy.c.correctness.file-not-closed" />
+    <module name="codacy.c.correctness.char-passed-to-ctype-function" />
+    <module name="codacy.cpp.correctness.exception-caught-by-value" />
+    <module name="codacy.cpp.correctness.exception-thrown-by-pointer" />
+    <module name="codacy.cpp.security.dangling-pointer-to-temporary-string" />
+    <module name="codacy.cpp.correctness.polymorphic-class-without-virtual-destructor" />
+</module>

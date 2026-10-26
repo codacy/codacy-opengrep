@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="1.5">
+    <file name="allocation-missing-null-terminator.c">
+        <error source="codacy.c.security.allocation-missing-null-terminator" line="5" message="Add 1 to this allocation size to make room for the terminating null character." severity="error" />
+        <error source="codacy.c.security.unchecked-allocation-result" line="6" message="Check that this allocation succeeded before using the returned pointer." severity="error" />
+        <error source="codacy.c.security.allocation-missing-null-terminator" line="11" message="Add 1 to this allocation size to make room for the terminating null character." severity="error" />
+        <error source="codacy.c.security.unchecked-allocation-result" line="12" message="Check that this allocation succeeded before using the returned pointer." severity="error" />
+        <error source="codacy.c.security.allocation-missing-null-terminator" line="17" message="Add 1 to this allocation size to make room for the terminating null character." severity="error" />
+        <error source="codacy.c.security.unchecked-allocation-result" line="22" message="Check that this allocation succeeded before using the returned pointer." severity="error" />
+    </file>
+    <file name="allocation-missing-null-terminator.cpp">
+        <error source="codacy.c.security.allocation-missing-null-terminator" line="4" message="Add 1 to this allocation size to make room for the terminating null character." severity="error" />
+    </file>
+    <file name="assignment-in-condition.c">
+        <error source="codacy.c.correctness.assignment-in-condition" line="4" message="Use '==' to compare, or wrap the assignment in an extra pair of parentheses if it is intended." severity="warning" />
+        <error source="codacy.c.correctness.assignment-in-condition" line="11" message="Use '==' to compare, or wrap the assignment in an extra pair of parentheses if it is intended." severity="warning" />
+    </file>
+    <file name="char-passed-to-ctype-function.c">
+        <error source="codacy.c.correctness.char-passed-to-ctype-function" line="7" message="Cast this character to unsigned char before passing it to the character classification function." severity="warning" />
+        <error source="codacy.c.correctness.char-passed-to-ctype-function" line="14" message="Cast this character to unsigned char before passing it to the character classification function." severity="warning" />
+    </file>
+    <file name="comparison-result-against-specific-value.c">
+        <error source="codacy.c.correctness.comparison-result-against-specific-value" line="4" message="Compare the result of this comparison function with 0 instead of 1 or -1. Functions such as strcmp and memcmp only guarantee the sign of their result, not its value." severity="warning" />
+        <error source="codacy.c.correctness.comparison-result-against-specific-value" line="8" message="Compare the result of this comparison function with 0 instead of 1 or -1. Functions such as strcmp and memcmp only guarantee the sign of their result, not its value." severity="warning" />
+    </file>
+    <file name="comparison-result-against-specific-value.cpp">
+        <error source="codacy.c.correctness.comparison-result-against-specific-value" line="4" message="Compare the result of this comparison function with 0 instead of 1 or -1. Functions such as strcmp and memcmp only guarantee the sign of their result, not its value." severity="warning" />
+    </file>
+    <file name="dangling-pointer-to-temporary-string.cpp">
+        <error source="codacy.cpp.security.dangling-pointer-to-temporary-string" line="9" message="Do not keep a pointer into this temporary string, it is destroyed at the end of the statement." severity="error" />
+        <error source="codacy.cpp.security.dangling-pointer-to-temporary-string" line="14" message="Do not keep a pointer into this temporary string, it is destroyed at the end of the statement." severity="error" />
+        <error source="codacy.cpp.security.dangling-pointer-to-temporary-string" line="19" message="Do not keep a pointer into this temporary string, it is destroyed at the end of the statement." severity="error" />
+    </file>
+    <file name="exception-caught-by-value.cpp">
+        <error source="codacy.cpp.correctness.exception-caught-by-value" line="7" message="Catch this exception by const reference instead of by value." severity="warning" />
+        <error source="codacy.cpp.correctness.exception-caught-by-value" line="15" message="Catch this exception by const reference instead of by value." severity="warning" />
+    </file>
+    <file name="exception-thrown-by-pointer.cpp">
+        <error source="codacy.cpp.correctness.exception-thrown-by-pointer" line="4" message="Throw this exception by value instead of allocating it with new." severity="warning" />
+    </file>
+    <file name="file-not-closed.c">
+        <error source="codacy.c.correctness.file-not-closed" line="5" message="Close this file or directory handle on every path through the function." severity="warning" />
+        <error source="codacy.c.correctness.file-not-closed" line="13" message="Close this file or directory handle on every path through the function." severity="warning" />
+    </file>
+    <file name="memset-zero-length.c">
+        <error source="codacy.c.correctness.memset-zero-length" line="4" message="Check the arguments of this memset call, it sets zero bytes." severity="error" />
+    </file>
+    <file name="mismatched-deallocation.cpp">
+        <error source="codacy.cpp.security.mismatched-deallocation" line="8" message="Release this memory with the deallocation function that matches how it was allocated." severity="error" />
+        <error source="codacy.cpp.security.mismatched-deallocation" line="13" message="Release this memory with the deallocation function that matches how it was allocated." severity="error" />
+        <error source="codacy.cpp.security.mismatched-deallocation" line="18" message="Release this memory with the deallocation function that matches how it was allocated." severity="error" />
+        <error source="codacy.cpp.security.mismatched-deallocation" line="23" message="Release this memory with the deallocation function that matches how it was allocated." severity="error" />
+        <error source="codacy.cpp.security.mismatched-deallocation" line="51" message="Release this memory with the deallocation function that matches how it was allocated." severity="error" />
+    </file>
+    <file name="polymorphic-class-without-virtual-destructor.cpp">
+        <error source="codacy.cpp.correctness.polymorphic-class-without-virtual-destructor" line="1" message="Make the destructor of this class virtual, or protected and non-virtual." severity="warning" />
+        <error source="codacy.cpp.correctness.polymorphic-class-without-virtual-destructor" line="7" message="Make the destructor of this class virtual, or protected and non-virtual." severity="warning" />
+    </file>
+    <file name="realloc-result-overwrites-pointer.c">
+        <error source="codacy.c.correctness.realloc-result-overwrites-pointer" line="4" message="Assign the result of realloc to a temporary pointer before overwriting the original one." severity="warning" />
+    </file>
+    <file name="return-address-of-local.c">
+        <error source="codacy.c.security.return-address-of-local" line="6" message="Do not return the address of this local variable." severity="error" />
+        <error source="codacy.c.security.return-address-of-local" line="11" message="Do not return the address of this local variable." severity="error" />
+    </file>
+    <file name="return-address-of-local.cpp">
+        <error source="codacy.c.security.return-address-of-local" line="13" message="Do not return the address of this local variable." severity="error" />
+    </file>
+    <file name="sizeof-pointer-as-buffer-size.c">
+        <error source="codacy.c.correctness.sizeof-pointer-as-buffer-size" line="6" message="Use the size of the pointed-to buffer instead of the size of the pointer. sizeof applied to a pointer returns the size of the pointer itself, typically 4 or 8 bytes, not the size of the buffer it points to." severity="error" />
+        <error source="codacy.c.correctness.sizeof-pointer-as-buffer-size" line="10" message="Use the size of the pointed-to buffer instead of the size of the pointer. sizeof applied to a pointer returns the size of the pointer itself, typically 4 or 8 bytes, not the size of the buffer it points to." severity="error" />
+        <error source="codacy.c.correctness.sizeof-pointer-as-buffer-size" line="15" message="Use the size of the pointed-to buffer instead of the size of the pointer. sizeof applied to a pointer returns the size of the pointer itself, typically 4 or 8 bytes, not the size of the buffer it points to." severity="error" />
+        <error source="codacy.c.correctness.sizeof-pointer-as-buffer-size" line="20" message="Use the size of the pointed-to buffer instead of the size of the pointer. sizeof applied to a pointer returns the size of the pointer itself, typically 4 or 8 bytes, not the size of the buffer it points to." severity="error" />
+    </file>
+    <file name="thread-unsafe-function.c">
+        <error source="codacy.c.correctness.thread-unsafe-function" line="8" message="Use the reentrant version of this function, such as localtime_r or getpwnam_r. This function returns a pointer to static data that can be overwritten by concurrent calls from other threads." severity="warning" />
+        <error source="codacy.c.correctness.thread-unsafe-function" line="13" message="Use the reentrant version of this function, such as localtime_r or getpwnam_r. This function returns a pointer to static data that can be overwritten by concurrent calls from other threads." severity="warning" />
+    </file>
+    <file name="unchecked-allocation-result.c">
+        <error source="codacy.c.security.unchecked-allocation-result" line="8" message="Check that this allocation succeeded before using the returned pointer." severity="error" />
+        <error source="codacy.c.security.unchecked-allocation-result" line="9" message="Check that this allocation succeeded before using the returned pointer." severity="error" />
+        <error source="codacy.c.security.unchecked-allocation-result" line="15" message="Check that this allocation succeeded before using the returned pointer." severity="error" />
+        <error source="codacy.c.security.unchecked-allocation-result" line="21" message="Check that this allocation succeeded before using the returned pointer." severity="error" />
+    </file>
+    <file name="unsafe-call-in-signal-handler.c">
+        <error source="codacy.c.security.unsafe-call-in-signal-handler" line="9" message="Only call async-signal-safe functions from this signal handler." severity="error" />
+        <error source="codacy.c.security.unsafe-call-in-signal-handler" line="10" message="Only call async-signal-safe functions from this signal handler." severity="error" />
+    </file>
+    <file name="unsigned-compared-with-zero.c">
+        <error source="codacy.c.correctness.unsigned-compared-with-zero" line="6" message="Remove or correct this comparison, an unsigned value is never negative." severity="warning" />
+        <error source="codacy.c.correctness.unsigned-compared-with-zero" line="14" message="Remove or correct this comparison, an unsigned value is never negative." severity="warning" />
+        <error source="codacy.c.correctness.unsigned-compared-with-zero" line="22" message="Remove or correct this comparison, an unsigned value is never negative." severity="warning" />
+    </file>
+</checkstyle>

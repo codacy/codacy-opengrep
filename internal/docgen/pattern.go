@@ -3,12 +3,15 @@ package docgen
 type Category string
 
 const (
-	Security      Category = "Security"
-	Performance   Category = "Performance"
-	Compatibility Category = "Compatibility"
-	ErrorProne    Category = "ErrorProne"
-	BestPractice  Category = "BestPractice"
-	CodeStyle     Category = "CodeStyle"
+	Security          Category = "Security"
+	Performance       Category = "Performance"
+	Compatibility     Category = "Compatibility"
+	ErrorProne        Category = "ErrorProne"
+	BestPractice      Category = "BestPractice"
+	CodeStyle         Category = "CodeStyle"
+	Complexity        Category = "Complexity"
+	UnusedCode        Category = "UnusedCode"
+	Comprehensibility Category = "Comprehensibility"
 )
 
 type Level string

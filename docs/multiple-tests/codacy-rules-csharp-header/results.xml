@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="1.5">
+    <file name="missing-copyright-header.cs">
+        <error source="codacy.csharp.best-practice.missing-copyright-header" line="1" message="Add a copyright and license header to this file." severity="info" />
+    </file>
+</checkstyle>

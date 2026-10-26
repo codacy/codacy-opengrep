@@ -1,0 +1,488 @@
+rules:
+  - id: codacy.c.security.allocation-missing-null-terminator
+    severity: ERROR
+    languages: [c, cpp]
+    message: >-
+      Add 1 to this allocation size to make room for the terminating null character.
+      A buffer of strlen(s) bytes is one byte too small to hold a copy of s, so copying the string into it overflows the buffer.
+    pattern-either:
+      - pattern: malloc(strlen($S))
+      - pattern: malloc(sizeof(char) * strlen($S))
+      - pattern: malloc(strlen($S) * sizeof(char))
+      - pattern: calloc(strlen($S), $N)
+      - pattern: realloc($P, strlen($S))
+      - pattern: alloca(strlen($S))
+      - pattern: new char[strlen($S)]
+    metadata:
+      category: security
+      cwe: "CWE-131: Incorrect Calculation of Buffer Size"
+      confidence: HIGH
+  - id: codacy.c.correctness.sizeof-pointer-as-buffer-size
+    severity: ERROR
+    languages: [c, cpp]
+    message: >-
+      Use the size of the pointed-to buffer instead of the size of the pointer.
+      sizeof applied to a pointer returns the size of the pointer itself, typically 4 or 8 bytes, not the size of the buffer it points to.
+    patterns:
+      - pattern-either:
+          - pattern-inside: |
+              $R $F(..., $T *$P, ...) { ... }
+          - pattern-inside: |
+              $R $F(..., $T $P[], ...) { ... }
+          - pattern-inside: |
+              $R $F(..., $T $P[$N], ...) { ... }
+          - pattern-inside: |
+              $T *$P = $INIT;
+              ...
+          - pattern-inside: |
+              $T *$P;
+              ...
+      - pattern-either:
+          - pattern: memset($P, $V, sizeof($P))
+          - pattern: memcpy($P, $SRC, sizeof($P))
+          - pattern: memcpy($DST, $P, sizeof($P))
+          - pattern: memmove($P, $SRC, sizeof($P))
+          - pattern: memmove($DST, $P, sizeof($P))
+          - pattern: memcmp($P, $O, sizeof($P))
+          - pattern: memcmp($O, $P, sizeof($P))
+          - pattern: strncpy($P, $SRC, sizeof($P))
+          - pattern: strncat($P, $SRC, sizeof($P))
+          - pattern: snprintf($P, sizeof($P), ...)
+          - pattern: fgets($P, sizeof($P), $FILE)
+          - pattern: read($FD, $P, sizeof($P))
+          - pattern: fread($P, $SZ, sizeof($P), $FILE)
+          - pattern: bzero($P, sizeof($P))
+    metadata:
+      category: correctness
+      cwe: "CWE-467: Use of sizeof() on a Pointer Type"
+      confidence: HIGH
+  - id: codacy.c.correctness.realloc-result-overwrites-pointer
+    severity: WARNING
+    languages: [c, cpp]
+    message: >-
+      Assign the result of realloc to a temporary pointer before overwriting the original one.
+      If realloc fails it returns NULL and keeps the original block, which is then leaked because the only pointer to it was overwritten.
+    pattern: $P = realloc($P, $N)
+    metadata:
+      category: correctness
+      cwe: "CWE-401: Missing Release of Memory after Effective Lifetime"
+      confidence: HIGH
+  - id: codacy.c.security.unchecked-allocation-result
+    severity: ERROR
+    languages: [c, cpp]
+    message: >-
+      Check that this allocation succeeded before using the returned pointer.
+      Allocation functions return NULL when memory is exhausted, and dereferencing that NULL pointer crashes the program or corrupts memory.
+    patterns:
+      - pattern-either:
+          - pattern-inside: |
+              $T *$P = $ALLOC(...);
+              ...
+          - pattern-inside: |
+              $T *$P = ($C) $ALLOC(...);
+              ...
+          - pattern-inside: |
+              $P = $ALLOC(...);
+              ...
+          - pattern-inside: |
+              $P = ($C) $ALLOC(...);
+              ...
+      - metavariable-regex:
+          metavariable: $ALLOC
+          regex: '^(?:malloc|calloc|realloc|strdup|strndup|aligned_alloc)$'
+      - pattern-either:
+          - pattern: $P[$I]
+          - patterns:
+              - pattern: '*$P'
+              - pattern-not-inside: $P->$FIELD
+          - pattern: $P->$FIELD
+          - pattern: memcpy($P, ...)
+          - pattern: memset($P, ...)
+          - pattern: memmove($P, ...)
+          - pattern: strcpy($P, ...)
+          - pattern: strncpy($P, ...)
+          - pattern: strcat($P, ...)
+          - pattern: sprintf($P, ...)
+          - pattern: snprintf($P, ...)
+      - pattern-not-inside: |
+          if ($P == NULL) $S;
+          ...
+      - pattern-not-inside: |
+          if (NULL == $P) $S;
+          ...
+      - pattern-not-inside: |
+          if (!$P) $S;
+          ...
+      - pattern-not-inside: |
+          if ($P == 0) $S;
+          ...
+      - pattern-not-inside: |
+          if ($P == nullptr) $S;
+          ...
+      - pattern-not-inside: if ($P) $S;
+      - pattern-not-inside: if ($P != NULL) $S;
+      - pattern-not-inside: if (NULL != $P) $S;
+      - pattern-not-inside: if ($P != nullptr) $S;
+      - pattern-not-inside: $P && $E
+      - pattern-not-inside: $P != NULL && $E
+      - pattern-not-inside: |
+          assert($P);
+          ...
+    metadata:
+      category: security
+      cwe: "CWE-690: Unchecked Return Value to NULL Pointer Dereference"
+      confidence: MEDIUM
+  - id: codacy.c.security.return-address-of-local
+    severity: ERROR
+    languages: [c, cpp]
+    message: >-
+      Do not return the address of this local variable.
+      The variable is destroyed when the function returns, so the caller receives a dangling pointer.
+    pattern-either:
+      - patterns:
+          - pattern-either:
+              - pattern-inside: |
+                  $R *$F(...) { ... $T $X[$N]; ... }
+              - pattern-inside: |
+                  $R *$F(...) { ... $T $X[$N] = $INIT; ... }
+              - pattern-inside: |
+                  $R *$F(...) { ... $T $X[] = $INIT; ... }
+          - pattern-not-inside: |
+              $R2 $F2(...) { ... static $T $X[$N]; ... }
+          - pattern-not-inside: |
+              $R2 $F2(...) { ... static $T $X[$N] = $INIT; ... }
+          - pattern-not-inside: |
+              $R2 $F2(...) { ... static $T $X[] = $INIT; ... }
+          - pattern: return $X;
+      - patterns:
+          - pattern-either:
+              - pattern-inside: |
+                  $R $F(...) { ... $T $X; ... }
+              - pattern-inside: |
+                  $R $F(...) { ... $T $X = $INIT; ... }
+          - pattern-not-inside: |
+              $R2 $F2(...) { ... static $T $X; ... }
+          - pattern-not-inside: |
+              $R2 $F2(...) { ... static $T $X = $INIT; ... }
+          - pattern-not-inside: |
+              $R2 $F2(...) { ... extern $T $X; ... }
+          - pattern: return &$X;
+    metadata:
+      category: security
+      cwe: "CWE-562: Return of Stack Variable Address"
+      confidence: HIGH
+  - id: codacy.cpp.security.mismatched-deallocation
+    severity: ERROR
+    languages: [cpp]
+    message: >-
+      Release this memory with the deallocation function that matches how it was allocated.
+      Memory from new[] must be released with delete[], memory from new with delete, and memory from malloc with free; mixing them is undefined behavior.
+    pattern-either:
+      - patterns:
+          - pattern-either:
+              - pattern-inside: |
+                  $T *$P = $NEW;
+                  ...
+              - pattern-inside: |
+                  $P = $NEW;
+                  ...
+          - metavariable-regex:
+              metavariable: $NEW
+              regex: '^new\s+[\w:<>,\s*&]+\['
+          - pattern-either:
+              - pattern: delete $P;
+              - pattern: free($P);
+      - patterns:
+          - pattern-either:
+              - pattern-inside: |
+                  $T *$P = $NEW;
+                  ...
+              - pattern-inside: |
+                  $P = $NEW;
+                  ...
+          - metavariable-regex:
+              metavariable: $NEW
+              regex: '^new\s+[\w:<>,\s*&]+[({][\s\S]*[)}]$'
+          - pattern-either:
+              - pattern: delete[] $P;
+              - pattern: free($P);
+      - patterns:
+          - pattern-either:
+              - pattern-inside: |
+                  $T *$P = $ALLOC(...);
+                  ...
+              - pattern-inside: |
+                  $T *$P = ($C) $ALLOC(...);
+                  ...
+              - pattern-inside: |
+                  $P = ($C) $ALLOC(...);
+                  ...
+          - metavariable-regex:
+              metavariable: $ALLOC
+              regex: '^(?:malloc|calloc|realloc|strdup)$'
+          - pattern-either:
+              - pattern: delete $P;
+              - pattern: delete[] $P;
+    metadata:
+      category: security
+      cwe: "CWE-762: Mismatched Memory Management Routines"
+      confidence: HIGH
+  - id: codacy.c.correctness.assignment-in-condition
+    severity: WARNING
+    languages: [c, cpp]
+    message: >-
+      Use '==' to compare, or wrap the assignment in an extra pair of parentheses if it is intended.
+      An assignment used as a condition is a frequent typo for a comparison and makes the condition always depend on the assigned value.
+    patterns:
+      - pattern-either:
+          - pattern: if ($A = $B) { ... }
+          - pattern: if ($A = $B) $S;
+          - pattern: while ($A = $B) { ... }
+          - pattern: while ($A = $B) $S;
+      - pattern-regex: '\b(?:if|while)[ \t]*\([ \t]*(?!\()(?:[^()=;]|\((?:[^()]|\([^()]*\))*\)|==|!=|<=|>=)*?(?<![=!<>+\-*/%&|^])=(?!=)'
+    options:
+      constant_propagation: false
+    metadata:
+      category: correctness
+      cwe: "CWE-481: Assigning instead of Comparing"
+      confidence: MEDIUM
+  - id: codacy.c.correctness.unsigned-compared-with-zero
+    severity: WARNING
+    languages: [c, cpp]
+    message: >-
+      Remove or correct this comparison, an unsigned value is never negative.
+      The comparison always has the same result, which usually means the variable has the wrong type or the check is wrong.
+    patterns:
+      - pattern-either:
+          - pattern-inside: |
+              $T $X = $V;
+              ...
+          - pattern-inside: |
+              $T $X;
+              ...
+          - pattern-inside: |
+              $R $F(..., $T $X, ...) { ... }
+      - metavariable-regex:
+          metavariable: $T
+          regex: '^(?:unsigned(?:\s+(?:int|long|short|char|long\s+long))?|size_t|std::size_t|uint(?:8|16|32|64)_t|std::uint(?:8|16|32|64)_t|uintptr_t|uintmax_t)$'
+      - pattern-either:
+          - pattern: $X < 0
+          - pattern: $X >= 0
+          - pattern: 0 > $X
+          - pattern: 0 <= $X
+    options:
+      constant_propagation: false
+    metadata:
+      category: correctness
+      cwe: "CWE-570: Expression is Always False"
+      confidence: HIGH
+  - id: codacy.c.correctness.memset-zero-length
+    severity: ERROR
+    languages: [c, cpp]
+    message: >-
+      Check the arguments of this memset call, it sets zero bytes.
+      A length of 0 usually means the value and length arguments were swapped, so the buffer is never initialized.
+    pattern-either:
+      - pattern: memset($P, $V, 0)
+      - pattern: std::memset($P, $V, 0)
+    options:
+      constant_propagation: false
+    metadata:
+      category: correctness
+      cwe: "CWE-687: Function Call With Incorrectly Specified Argument Value"
+      confidence: HIGH
+  - id: codacy.c.correctness.comparison-result-against-specific-value
+    severity: WARNING
+    languages: [c, cpp]
+    message: >-
+      Compare the result of this comparison function with 0 instead of 1 or -1.
+      Functions such as strcmp and memcmp only guarantee the sign of their result, not its value.
+    patterns:
+      - pattern-either:
+          - pattern: $CMP(...) == $K
+          - pattern: $CMP(...) != $K
+          - pattern: $K == $CMP(...)
+          - pattern: $K != $CMP(...)
+          - pattern: $O.compare(...) == $K
+          - pattern: $O.compare(...) != $K
+      - metavariable-regex:
+          metavariable: $K
+          regex: '^(?:-1|1)$'
+      - pattern-either:
+          - pattern: $O.compare(...) == $K
+          - pattern: $O.compare(...) != $K
+          - patterns:
+              - pattern-either:
+                  - pattern: $CMP(...) == $K
+                  - pattern: $CMP(...) != $K
+                  - pattern: $K == $CMP(...)
+                  - pattern: $K != $CMP(...)
+              - metavariable-regex:
+                  metavariable: $CMP
+                  regex: '^(?:std::)?(?:strcmp|strncmp|strcasecmp|strncasecmp|memcmp|wcscmp|wcsncmp|_stricmp|_strnicmp|strcoll)$'
+    options:
+      constant_propagation: false
+    metadata:
+      category: correctness
+      cwe: "CWE-697: Incorrect Comparison"
+      confidence: HIGH
+  - id: codacy.c.correctness.thread-unsafe-function
+    severity: WARNING
+    languages: [c, cpp]
+    message: >-
+      Use the reentrant version of this function, such as localtime_r or getpwnam_r.
+      This function returns a pointer to static data that can be overwritten by concurrent calls from other threads.
+    patterns:
+      - pattern: $FN(...)
+      - metavariable-regex:
+          metavariable: $FN
+          regex: '^(?:std::)?(?:localtime|gmtime|ctime|asctime|getpwnam|getpwuid|getgrnam|getgrgid|gethostbyname|gethostbyaddr|inet_ntoa|ttyname|getpwent|getgrent)$'
+    metadata:
+      category: correctness
+      cwe: "CWE-362: Concurrent Execution using Shared Resource with Improper Synchronization ('Race Condition')"
+      confidence: MEDIUM
+  - id: codacy.c.security.unsafe-call-in-signal-handler
+    severity: ERROR
+    languages: [c, cpp]
+    message: >-
+      Only call async-signal-safe functions from this signal handler.
+      Functions such as printf, malloc or exit can deadlock or corrupt state when a signal interrupts them; set a volatile sig_atomic_t flag instead.
+    patterns:
+      - pattern-either:
+          - pattern-inside: |
+              void $H(int $SIG) { ... }
+              ...
+              signal($N, $H);
+          - pattern-inside: |
+              void $H(int $SIG) { ... }
+              ...
+              $SA.sa_handler = $H;
+          - pattern-inside: |
+              signal($N, $H);
+              ...
+              void $H(int $SIG) { ... }
+      - pattern-inside: |
+          void $H(int $SIG) { ... }
+      - pattern: $FN(...)
+      - metavariable-regex:
+          metavariable: $FN
+          regex: '^(?:std::)?(?:printf|fprintf|sprintf|snprintf|vprintf|vfprintf|puts|fputs|putchar|fputc|perror|malloc|calloc|realloc|free|exit|syslog|fopen|fclose|fflush|fwrite|longjmp|strerror|localtime|time)$'
+    metadata:
+      category: security
+      cwe: "CWE-479: Signal Handler Use of a Non-reentrant Function"
+      confidence: HIGH
+  - id: codacy.c.correctness.file-not-closed
+    severity: WARNING
+    languages: [c, cpp]
+    message: >-
+      Close this file or directory handle on every path through the function.
+      Handles that are never released leak file descriptors, and buffered writes may be lost.
+    patterns:
+      - pattern-inside: |
+          $R $FN(...) { ... }
+      - pattern-either:
+          - patterns:
+              - pattern-either:
+                  - pattern: $T *$F = fopen(...);
+                  - pattern: $F = fopen(...);
+                  - pattern: $T *$F = fdopen(...);
+              - pattern-not-inside: |
+                  $R $FN(...) { ... fclose($F); ... }
+          - patterns:
+              - pattern-either:
+                  - pattern: $T *$F = popen(...);
+                  - pattern: $F = popen(...);
+              - pattern-not-inside: |
+                  $R $FN(...) { ... pclose($F); ... }
+          - patterns:
+              - pattern-either:
+                  - pattern: $T *$F = opendir(...);
+                  - pattern: $F = opendir(...);
+              - pattern-not-inside: |
+                  $R $FN(...) { ... closedir($F); ... }
+      - pattern-not-inside: |
+          $R $FN(...) { ... return $F; ... }
+      - pattern-not-inside: |
+          $R $FN(...) { ... $X->$FIELD = $F; ... }
+      - pattern-not-inside: |
+          $R $FN(...) { ... $X.$FIELD = $F; ... }
+    metadata:
+      category: correctness
+      cwe: "CWE-775: Missing Release of File Descriptor or Handle after Effective Lifetime"
+      confidence: MEDIUM
+  - id: codacy.c.correctness.char-passed-to-ctype-function
+    severity: WARNING
+    languages: [c, cpp]
+    message: >-
+      Cast this character to unsigned char before passing it to the character classification function.
+      Passing a negative char value, such as a non-ASCII character, to these functions is undefined behavior.
+    patterns:
+      - pattern-either:
+          - pattern-inside: |
+              char $C = $V;
+              ...
+          - pattern-inside: |
+              char $C;
+              ...
+          - pattern-inside: |
+              $R $F(..., char $C, ...) { ... }
+      - pattern: $FN($C)
+      - pattern-not: $FN(($CAST) $C)
+      - pattern-not: $FN(static_cast<$CAST>($C))
+      - metavariable-regex:
+          metavariable: $FN
+          regex: '^(?:std::)?(?:isalnum|isalpha|isblank|iscntrl|isdigit|isgraph|islower|isprint|ispunct|isspace|isupper|isxdigit|tolower|toupper)$'
+    metadata:
+      category: correctness
+      cwe: "CWE-704: Incorrect Type Conversion or Cast"
+      confidence: HIGH
+  - id: codacy.cpp.correctness.exception-caught-by-value
+    severity: WARNING
+    languages: [cpp]
+    message: >-
+      Catch this exception by const reference instead of by value.
+      Catching by value copies the exception and slices derived exception types, losing their data and overridden behavior.
+    pattern-regex: '\bcatch[ \t]*\([ \t]*(?:const[ \t]+)?\K(?!(?:int|long|short|char|unsigned|signed|bool|float|double|size_t|std::size_t)\b)[A-Za-z_][\w:]*(?:<[^<>()]*>)?(?=[ \t]+\w+[ \t]*\))'
+    metadata:
+      category: correctness
+      cwe: "CWE-755: Improper Handling of Exceptional Conditions"
+      confidence: HIGH
+  - id: codacy.cpp.correctness.exception-thrown-by-pointer
+    severity: WARNING
+    languages: [cpp]
+    message: >-
+      Throw this exception by value instead of allocating it with new.
+      Handlers expecting a reference never catch a pointer, and the allocated exception object is usually leaked.
+    pattern: throw new $T(...)
+    metadata:
+      category: correctness
+      cwe: "CWE-401: Missing Release of Memory after Effective Lifetime"
+      confidence: HIGH
+  - id: codacy.cpp.security.dangling-pointer-to-temporary-string
+    severity: ERROR
+    languages: [cpp]
+    message: >-
+      Do not keep a pointer into this temporary string, it is destroyed at the end of the statement.
+      Using the pointer afterwards reads freed memory.
+    pattern-either:
+      - pattern: $T *$P = $F(...).c_str();
+      - pattern: $T *$P = $O.$F(...).c_str();
+      - pattern: $T *$P = ($A + $B).c_str();
+      - pattern: $P = $F(...).c_str();
+      - pattern: $P = $O.$F(...).c_str();
+      - pattern: $P = ($A + $B).c_str();
+    metadata:
+      category: security
+      cwe: "CWE-416: Use After Free"
+      confidence: MEDIUM
+  - id: codacy.cpp.correctness.polymorphic-class-without-virtual-destructor
+    severity: WARNING
+    languages: [cpp]
+    message: >-
+      Make the destructor of this class virtual, or protected and non-virtual.
+      Deleting a derived object through a pointer to this base class without a virtual destructor is undefined behavior and leaks resources.
+    pattern-regex: '\b(?:class|struct)[ \t]+\K(\w+)\b(?![ \t]*final\b)(?=[ \t]*\{)(?=\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*?\n[ \t]*virtual\b)(?!\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*?\bvirtual[ \t]+~\1\b)(?!\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*?\bprotected[ \t]*:(?:(?!\b(?:public|private)[ \t]*:)[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*?~\1\b)'
+    metadata:
+      category: correctness
+      cwe: "CWE-1079: Parent Class without Virtual Destructor Method"
+      confidence: MEDIUM
