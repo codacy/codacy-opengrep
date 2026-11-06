@@ -16,11 +16,10 @@ func TestCreateCommand(t *testing.T) {
 	configurationFile, _ := os.CreateTemp("", "config.*.yaml")
 	defer os.Remove(configurationFile.Name())
 	sourceDir := "/path/to/source"
-	language := "go"
 	files := []string{"file1.go", "file2.go"}
 
 	// Act
-	cmd := createCommand(configurationFile, sourceDir, language, files)
+	cmd := createCommand(configurationFile, sourceDir, files)
 
 	// Assert
 	assert.IsType(t, &exec.Cmd{}, cmd)
@@ -32,17 +31,15 @@ func TestCreateCommandParameters(t *testing.T) {
 	// Arrange
 	configurationFile, _ := os.CreateTemp("", "semgrep.yaml")
 	defer os.Remove(configurationFile.Name())
-	language := "go"
 	filesToAnalyse := []string{"file1.go", "file2.go"}
 
 	// Act
-	cmdParams := createCommandParameters(language, configurationFile, filesToAnalyse)
+	cmdParams := createCommandParameters(configurationFile, filesToAnalyse)
 
 	// Assert
 	expectedParams := []string{
 		"scan",
 		"--json",
-		//"-lang", language,
 		"--config", configurationFile.Name(),
 		"--timeout", "10",
 		"--timeout-threshold", "5",
