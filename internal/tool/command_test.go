@@ -79,6 +79,44 @@ func TestRunCommand_Error(t *testing.T) {
 	assert.Empty(t, stderr, "Expected empty stderr for a failed command")
 }
 
+func TestRunCommand_ExitCode2WithReport(t *testing.T) {
+	// Arrange
+	report := `{"results": [], "errors": [{"level": "error", "message": "Out of memory"}]}`
+	mockCmd := exec.Command("sh", "-c", "echo '"+report+"'; echo 'Scan Status' >&2; exit 2")
+
+	// Act
+	stdout, stderr, err := runCommand(mockCmd)
+
+	// Assert
+	assert.NoError(t, err)
+	assert.Nil(t, stderr)
+	assert.Equal(t, report+"\n", *stdout)
+}
+
+func TestRunCommand_ExitCode2WithoutReport(t *testing.T) {
+	// Arrange
+	mockCmd := exec.Command("sh", "-c", "echo 'not a report'; exit 2")
+
+	// Act
+	stdout, _, err := runCommand(mockCmd)
+
+	// Assert
+	assert.Error(t, err)
+	assert.Nil(t, stdout)
+}
+
+func TestRunCommand_OtherExitCodeWithReport(t *testing.T) {
+	// Arrange
+	mockCmd := exec.Command("sh", "-c", `echo '{"results": [], "errors": []}'; exit 7`)
+
+	// Act
+	stdout, _, err := runCommand(mockCmd)
+
+	// Assert
+	assert.Error(t, err)
+	assert.Nil(t, stdout)
+}
+
 func TestParseCommandOutput(t *testing.T) {
 	// Arrange
 	mockPatternDescriptions := []codacy.PatternDescription{
@@ -256,6 +294,37 @@ func TestAppendErrorToResult(t *testing.T) {
 
 	filePath := result[lastResultIndex].GetFile()
 	assert.Equal(t, mockSemgrepOutput.Errors[0].Location.Path, filePath)
+}
+
+func TestAppendErrorToResult_TopLevelPath(t *testing.T) {
+	// Arrange
+	mockSemgrepOutput := SemgrepOutput{
+		Errors: []SemgrepError{{Level: "warn", Message: "Partial parsing", Path: "src/a.yml"}},
+	}
+
+	// Act
+	result := appendErrorToResult([]codacy.Result{}, mockSemgrepOutput)
+
+	// Assert
+	assert.Len(t, result, 1)
+	assert.Equal(t, "src/a.yml", result[0].GetFile())
+}
+
+func TestAppendErrorToResult_RuleErrorIsNotAFileError(t *testing.T) {
+	// Arrange
+	mockSemgrepOutput := SemgrepOutput{
+		Errors: []SemgrepError{{
+			Level:   "error",
+			RuleID:  "tmp.csharp_crypto_rule-CertificateValidationDisabled",
+			Message: "Rule parse error in rule tmp.csharp_crypto_rule-CertificateValidationDisabled",
+		}},
+	}
+
+	// Act
+	result := appendErrorToResult([]codacy.Result{}, mockSemgrepOutput)
+
+	// Assert
+	assert.Empty(t, result, "Rule-level errors should be logged, not reported as file errors")
 }
 
 func TestWriteMessageWithEmptyMessageAndPatternDescriptionExists(t *testing.T) {

@@ -12,6 +12,9 @@ RUN go build -o bin/codacy-opengrep -ldflags="-s -w" ./cmd/tool
 COPY .tool_version .tool_version
 COPY docs /docs
 RUN go run ./cmd/docgen -docFolder /docs
+# TEMPORARY: fix rules that fail to parse in the current Opengrep version (see scripts/hotfix-rules.sh)
+COPY scripts/hotfix-rules.sh /tmp/hotfix-rules.sh
+RUN sh /tmp/hotfix-rules.sh /docs/rules.yaml
 
 # Compress binaries for smaller image size
 FROM alpine:3.21 AS compressor
