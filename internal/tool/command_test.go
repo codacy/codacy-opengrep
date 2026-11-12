@@ -79,6 +79,44 @@ func TestRunCommand_Error(t *testing.T) {
 	assert.Empty(t, stderr, "Expected empty stderr for a failed command")
 }
 
+func TestRunCommand_ExitCode2WithReport(t *testing.T) {
+	// Arrange
+	report := `{"results": [], "errors": [{"level": "error", "message": "Out of memory"}]}`
+	mockCmd := exec.Command("sh", "-c", "echo '"+report+"'; echo 'Scan Status' >&2; exit 2")
+
+	// Act
+	stdout, stderr, err := runCommand(mockCmd)
+
+	// Assert
+	assert.NoError(t, err)
+	assert.Nil(t, stderr)
+	assert.Equal(t, report+"\n", *stdout)
+}
+
+func TestRunCommand_ExitCode2WithoutReport(t *testing.T) {
+	// Arrange
+	mockCmd := exec.Command("sh", "-c", "echo 'not a report'; exit 2")
+
+	// Act
+	stdout, _, err := runCommand(mockCmd)
+
+	// Assert
+	assert.Error(t, err)
+	assert.Nil(t, stdout)
+}
+
+func TestRunCommand_OtherExitCodeWithReport(t *testing.T) {
+	// Arrange
+	mockCmd := exec.Command("sh", "-c", `echo '{"results": [], "errors": []}'; exit 7`)
+
+	// Act
+	stdout, _, err := runCommand(mockCmd)
+
+	// Assert
+	assert.Error(t, err)
+	assert.Nil(t, stdout)
+}
+
 func TestParseCommandOutput(t *testing.T) {
 	// Arrange
 	mockPatternDescriptions := []codacy.PatternDescription{

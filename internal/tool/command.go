@@ -132,6 +132,12 @@ func runCommand(cmd *exec.Cmd) (*string, *string, error) {
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	cmdOutput, err := cmd.Output()
+	// Opengrep exits 2 when some files had errors but still prints the full JSON report,
+	// whose errors are reported as file errors, so its results are kept
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) && exitErr.ExitCode() == 2 && json.Valid(cmdOutput) {
+		err = nil
+	}
 	if err != nil {
 		stderrString := stderr.String()
 		return nil, &stderrString, err
