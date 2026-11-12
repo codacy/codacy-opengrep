@@ -40,8 +40,21 @@ type SemgrepExtra struct {
 }
 
 type SemgrepError struct {
-	Message  string               `json:"message"`
+	Level   string `json:"level"`
+	RuleID  string `json:"rule_id"`
+	Message string `json:"message"`
+	// Opengrep reports the file of an error in the top-level "path" field
+	Path     string               `json:"path"`
 	Location SemgrepErrorLocation `json:"location"`
+}
+
+// file returns the file an error is about, or "" for errors that are not
+// about a file, such as a rule that fails to parse.
+func (e SemgrepError) file() string {
+	if e.Path != "" {
+		return e.Path
+	}
+	return e.Location.Path
 }
 
 type SemgrepErrorLocation struct {
@@ -132,6 +145,13 @@ func runCommand(cmd *exec.Cmd) (*string, *string, error) {
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	cmdOutput, err := cmd.Output()
+	// Opengrep exits 2 when an error-level problem occurred (e.g. a rule that fails
+	// to parse, which it then skips) but still prints the full JSON report. Its
+	// errors are handled by appendErrorToResult, so the results are kept
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) && exitErr.ExitCode() == 2 && json.Valid(cmdOutput) {
+		err = nil
+	}
 	if err != nil {
 		stderrString := stderr.String()
 		return nil, &stderrString, err
@@ -215,12 +235,21 @@ func appendErrorToResult(result []codacy.Result, semgrepOutput SemgrepOutput) []
 		// The error message already with sizeMessage length
 		truncatedMessage := semgrepError.Message[:sizeMessage]
 
+		file := semgrepError.file()
+		if file == "" {
+			// Not about a user file (e.g. a rule that fails to parse, which Opengrep
+			// then skips): log it for us instead of reporting it as a file error
+			ruleID := strings.TrimPrefix(semgrepError.RuleID, "tmp.")
+			fmt.Fprintf(os.Stderr, "opengrep %s (rule %q): %s\n", semgrepError.Level, ruleID, truncatedMessage)
+			continue
+		}
+
 		// Append the error to the result but only if it doesn't contain
 		// "Syntax error at line" to avoid logging syntax errors that are not relevant for the user
 		if !strings.Contains(truncatedMessage, "Syntax error at line") {
 			result = append(result, codacy.FileError{
 				Message: truncatedMessage,
-				File:    semgrepError.Location.Path,
+				File:    file,
 			})
 		}
 	}
