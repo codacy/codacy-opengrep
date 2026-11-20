@@ -6,10 +6,10 @@
     <module name="c.lang.security.double-free.double-free" />
     <module name="c.lang.security.insecure-use-gets-fn.insecure-use-gets-fn" />
     <module name="clojure.lang.security.use-of-md5.use-of-md5" />
-    <module name="codacy.yaml.security.secret-dump" />
-    <module name="codacy.yaml.security.secret-env-alias-in-run" />
-    <module name="codacy.yaml.security.secret-env-alias-scoped-in-run" />
-    <module name="codacy.yaml.security.secret-in-run" />
+    <module name="codacy.yaml.security.github-actions-secret-env-used-in-scope" />
+    <module name="codacy.yaml.security.github-actions-secret-env-used-in-step" />
+    <module name="codacy.yaml.security.github-actions-secret-interpolated-in-run" />
+    <module name="codacy.yaml.security.github-actions-secrets-context-dumped" />
     <module
         name="csharp.dotnet.security.use_weak_rng_for_keygeneration.use_weak_rng_for_keygeneration" />
     <module name="csharp.lang.security.filesystem.unsafe-path-combine.unsafe-path-combine" />

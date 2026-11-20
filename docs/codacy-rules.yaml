@@ -664,7 +664,7 @@ rules:
         - yaml
       impact: HIGH
       confidence: MEDIUM
-  - id: codacy.yaml.security.secret-in-run
+  - id: codacy.yaml.security.github-actions-secret-interpolated-in-run
     languages:
       - yaml
     severity: ERROR
@@ -682,7 +682,7 @@ rules:
         - yaml
       impact: HIGH
       confidence: MEDIUM
-  - id: codacy.yaml.security.secret-env-alias-in-run
+  - id: codacy.yaml.security.github-actions-secret-env-used-in-step
     languages:
       - yaml
     severity: ERROR
@@ -697,7 +697,7 @@ rules:
         - yaml
       impact: HIGH
       confidence: MEDIUM
-  - id: codacy.yaml.security.secret-dump
+  - id: codacy.yaml.security.github-actions-secrets-context-dumped
     languages:
       - yaml
     severity: ERROR
@@ -713,7 +713,7 @@ rules:
       impact: HIGH
       confidence: HIGH
 
-  - id: codacy.yaml.security.secret-env-alias-scoped-in-run
+  - id: codacy.yaml.security.github-actions-secret-env-used-in-scope
     languages:
       - yaml
     severity: ERROR
