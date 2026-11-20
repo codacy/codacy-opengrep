@@ -664,3 +664,69 @@ rules:
         - yaml
       impact: HIGH
       confidence: MEDIUM
+  - id: codacy.yaml.security.github-actions-secret-interpolated-in-run
+    languages:
+      - yaml
+    severity: ERROR
+    message: A GitHub Actions secret is interpolated into a run block. The value can be printed to the job log or written to files, in plain or encoded form.
+    patterns:
+      - pattern-inside: |
+          run: $X
+      - pattern-regex: '\$\{\{\s*secrets\.'
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Secrets used in run blocks can leak through logs and artifacts.
+      category: security
+      technology:
+        - yaml
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.yaml.security.github-actions-secret-env-used-in-step
+    languages:
+      - yaml
+    severity: ERROR
+    message: An environment variable bound to a GitHub Actions secret is referenced in the same step's run block. The value can be printed to the job log or written to files, in plain or encoded form.
+    pattern-regex: '(?s)(?P<k>[A-Za-z_][A-Za-z0-9_]*):\s*\$\{\{\s*secrets\.[A-Za-z0-9_]+\s*\}\}(?:(?!\n\s*-\s)[\s\S])*?\K(?:\$\{?|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Secrets bound to environment variables can leak through logs and artifacts when the variable is referenced in a run block.
+      category: security
+      technology:
+        - yaml
+      impact: HIGH
+      confidence: MEDIUM
+  - id: codacy.yaml.security.github-actions-secrets-context-dumped
+    languages:
+      - yaml
+    severity: ERROR
+    message: The entire secrets context is serialized into a workflow expression. This prints every secret of the repository or organization.
+    pattern-regex: '\$\{\{\s*toJSON\(\s*secrets\s*\)'
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Dumping the secrets context exposes all secrets to logs.
+      category: security
+      technology:
+        - yaml
+      impact: HIGH
+      confidence: HIGH
+
+  - id: codacy.yaml.security.github-actions-secret-env-used-in-scope
+    languages:
+      - yaml
+    severity: ERROR
+    message: An environment variable bound to a GitHub Actions secret at job or workflow level is referenced in a run block within its scope. The value can be printed to the job log or written to files, in plain or encoded form.
+    pattern-either:
+      - pattern-regex: '(?m)^ {6}(?P<k>[A-Za-z_]\w*):[ \t]*\$\{\{\s*secrets\.\w+\s*\}\}(?:(?!\n {2}[A-Za-z_][\w-]*:[ \t]*\n)[\s\S])*?\K(?:\$\{?|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
+      - pattern-regex: '(?m)^env:[ \t]*\n(?:(?:[ ]{2}[^\n]*|[ \t]*)\n)*?[ ]{2}(?P<k>[A-Za-z_]\w*):[ \t]*\$\{\{\s*secrets\.\w+\s*\}\}(?:[\s\S])*?\K(?:\$\{?|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
+    metadata:
+      owasp:
+        - A3:2017 Sensitive Data Exposure
+      description: Secrets bound at job or workflow level can leak through logs and artifacts when the variable is referenced in a run block within its scope.
+      category: security
+      technology:
+        - yaml
+      impact: HIGH
+      confidence: MEDIUM
