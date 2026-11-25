@@ -1,6 +1,6 @@
 module github.com/codacy/codacy-opengrep
 
-go 1.26.0
+go 1.27.4
 
 require (
 	github.com/codacy/codacy-engine-golang-seed/v6 v6.4.8
