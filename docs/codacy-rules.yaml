@@ -672,7 +672,7 @@ rules:
     patterns:
       - pattern-inside: |
           run: $X
-      - pattern-regex: '\$\{\{\s*secrets\.'
+      - pattern-regex: '\$\{\{\s*secrets(?:\.|\[)'
     metadata:
       owasp:
         - A3:2017 Sensitive Data Exposure
@@ -687,7 +687,7 @@ rules:
       - yaml
     severity: ERROR
     message: An environment variable bound to a GitHub Actions secret is referenced in the same step's run block. The value can be printed to the job log or written to files, in plain or encoded form.
-    pattern-regex: '(?s)(?P<k>[A-Za-z_][A-Za-z0-9_]*):\s*\$\{\{\s*secrets\.[A-Za-z0-9_]+\s*\}\}(?:(?!\n\s*-\s)[\s\S])*?\K(?:\$\{?|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
+    pattern-regex: '(?s)(?P<k>[A-Za-z_][A-Za-z0-9_]*):\s*["'']?\$\{\{\s*secrets(?:\.[A-Za-z0-9_]+|\[\s*["''][A-Za-z0-9_]+["'']\s*\])\s*\}\}["'']?(?:(?!\n\s*-\s)[\s\S])*?\K(?:\$\{?|\$env:|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
     metadata:
       owasp:
         - A3:2017 Sensitive Data Exposure
@@ -719,8 +719,8 @@ rules:
     severity: ERROR
     message: An environment variable bound to a GitHub Actions secret at job or workflow level is referenced in a run block within its scope. The value can be printed to the job log or written to files, in plain or encoded form.
     pattern-either:
-      - pattern-regex: '(?m)^ {6}(?P<k>[A-Za-z_]\w*):[ \t]*\$\{\{\s*secrets\.\w+\s*\}\}(?:(?!\n {2}[A-Za-z_][\w-]*:[ \t]*\n)[\s\S])*?\K(?:\$\{?|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
-      - pattern-regex: '(?m)^env:[ \t]*\n(?:(?:[ ]{2}[^\n]*|[ \t]*)\n)*?[ ]{2}(?P<k>[A-Za-z_]\w*):[ \t]*\$\{\{\s*secrets\.\w+\s*\}\}(?:[\s\S])*?\K(?:\$\{?|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
+      - pattern-regex: '(?m)^ {6}(?P<k>[A-Za-z_]\w*):[ \t]*["'']?\$\{\{\s*secrets(?:\.\w+|\[\s*["''][A-Za-z0-9_]+["'']\s*\])\s*\}\}["'']?(?:(?!\n {2}[A-Za-z_][\w-]*:[ \t]*\n)[\s\S])*?\K(?:\$\{?|\$env:|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
+      - pattern-regex: '(?m)^env:[ \t]*\n(?:(?:[ ]{2}[^\n]*|[ \t]*)\n)*?[ ]{2}(?P<k>[A-Za-z_]\w*):[ \t]*["'']?\$\{\{\s*secrets(?:\.\w+|\[\s*["''][A-Za-z0-9_]+["'']\s*\])\s*\}\}["'']?(?:[\s\S])*?\K(?:\$\{?|\$env:|\$\{\{\s*env\.)(?P=k)(?![A-Za-z0-9_])'
     metadata:
       owasp:
         - A3:2017 Sensitive Data Exposure

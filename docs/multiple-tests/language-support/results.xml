@@ -318,6 +318,11 @@
             line="26"
             message="An environment variable bound to a GitHub Actions secret at job or workflow level is referenced in a run block within its scope. The value can be printed to the job log or written to files, in plain or encoded form."
             severity="error" />
+        <error
+            source="codacy.yaml.security.github-actions-secret-env-used-in-scope"
+            line="36"
+            message="An environment variable bound to a GitHub Actions secret at job or workflow level is referenced in a run block within its scope. The value can be printed to the job log or written to files, in plain or encoded form."
+            severity="error" />
     </file>
     <file name="yaml/github-actions-secret-env-used-in-step.test.yml">
         <error
@@ -338,6 +343,21 @@
         <error
             source="codacy.yaml.security.github-actions-secret-env-used-in-step"
             line="27"
+            message="An environment variable bound to a GitHub Actions secret is referenced in the same step's run block. The value can be printed to the job log or written to files, in plain or encoded form."
+            severity="error" />
+        <error
+            source="codacy.yaml.security.github-actions-secret-env-used-in-step"
+            line="52"
+            message="An environment variable bound to a GitHub Actions secret is referenced in the same step's run block. The value can be printed to the job log or written to files, in plain or encoded form."
+            severity="error" />
+        <error
+            source="codacy.yaml.security.github-actions-secret-env-used-in-step"
+            line="57"
+            message="An environment variable bound to a GitHub Actions secret is referenced in the same step's run block. The value can be printed to the job log or written to files, in plain or encoded form."
+            severity="error" />
+        <error
+            source="codacy.yaml.security.github-actions-secret-env-used-in-step"
+            line="62"
             message="An environment variable bound to a GitHub Actions secret is referenced in the same step's run block. The value can be printed to the job log or written to files, in plain or encoded form."
             severity="error" />
     </file>
@@ -364,12 +384,12 @@
             severity="error" />
         <error
             source="codacy.yaml.security.github-actions-secret-interpolated-in-run"
-            line="20"
+            line="17"
             message="A GitHub Actions secret is interpolated into a run block. The value can be printed to the job log or written to files, in plain or encoded form."
             severity="error" />
         <error
             source="codacy.yaml.security.github-actions-secret-interpolated-in-run"
-            line="22"
+            line="19"
             message="A GitHub Actions secret is interpolated into a run block. The value can be printed to the job log or written to files, in plain or encoded form."
             severity="error" />
     </file>
