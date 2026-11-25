@@ -1,7 +1,7 @@
 ARG OPENGREP_VERSION=v1.33.1
 
 # Build codacy-opengrep wrapper
-FROM golang:1.23-alpine3.21 AS builder
+FROM golang:1.26-alpine3.24 AS builder
 WORKDIR /src
 COPY go.mod go.mod
 COPY go.sum go.sum
@@ -17,13 +17,13 @@ COPY scripts/hotfix-rules.sh /tmp/hotfix-rules.sh
 RUN sh /tmp/hotfix-rules.sh /docs/rules.yaml
 
 # Compress binaries for smaller image size
-FROM alpine:3.21 AS compressor
+FROM alpine:3.24 AS compressor
 RUN apk add --no-cache upx
 COPY --from=builder /src/bin/codacy-opengrep /src/bin/codacy-opengrep
 RUN upx --lzma /src/bin/codacy-opengrep
 
 # Final published image for the codacy-opengrep wrapper
-FROM python:3.12-slim
+FROM python:3.15-slim
 RUN apt update && apt install -y tar bash cosign curl adduser file
 RUN adduser --uid 2004 --disabled-password --gecos "" docker
 
