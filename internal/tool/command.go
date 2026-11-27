@@ -118,7 +118,7 @@ func createCommandParameters(configurationFile *os.File, filesToAnalyse []string
 		"scan",
 		"--json", //"-json_nodots",
 		"--config", configurationFile.Name(),
-		"--timeout", "10",
+		"--timeout", "20",
 		"--timeout-threshold", "5",
 		"--max-target-bytes", "150000",
 		"--taint-intrafile",
