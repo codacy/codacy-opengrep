@@ -41,7 +41,7 @@ func TestCreateCommandParameters(t *testing.T) {
 		"scan",
 		"--json",
 		"--config", configurationFile.Name(),
-		"--timeout", "10",
+		"--timeout", "20",
 		"--timeout-threshold", "5",
 		"--max-target-bytes", "150000",
 		// "-error_recovery",
